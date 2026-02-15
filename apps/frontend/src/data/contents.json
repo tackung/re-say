@@ -40,6 +40,23 @@
         {
           "en": "Let's catch up again when things slow down.",
           "ja": "落ち着いたら、またゆっくり話そう。"
+        },
+        {
+          "en": "I barely had time for breakfast this morning.",
+          "ja": "今朝は朝食をとる時間がほとんどありませんでした。"
+        },
+        { "en": "Did you sleep well last night?", "ja": "昨夜はよく眠れた？" },
+        {
+          "en": "Work has been hectic lately, but I'm getting through it.",
+          "ja": "最近仕事は慌ただしいけど、なんとかやれてるよ。"
+        },
+        {
+          "en": "I'm planning to take it easy this weekend.",
+          "ja": "今週末はのんびり過ごす予定です。"
+        },
+        {
+          "en": "Let me know if you're free sometime next week.",
+          "ja": "来週どこかで空いていたら教えてね。"
         }
       ]
     },
@@ -77,6 +94,23 @@
         {
           "en": "Could you tell me when this will be back in stock?",
           "ja": "これが再入荷する時期を教えてもらえますか？"
+        },
+        {
+          "en": "Is this available online if it's sold out here?",
+          "ja": "ここで売り切れなら、オンラインで買えますか？"
+        },
+        { "en": "Could you check the price for me?", "ja": "値段を確認してもらえますか？" },
+        {
+          "en": "Do you have a warranty for this product?",
+          "ja": "この商品には保証がありますか？"
+        },
+        {
+          "en": "I'm just browsing for now, thank you.",
+          "ja": "今は見ているだけです、ありがとうございます。"
+        },
+        {
+          "en": "Can I exchange this for a different color?",
+          "ja": "これを別の色に交換できますか？"
         }
       ]
     },
@@ -114,6 +148,23 @@
         {
           "en": "Everything was great, especially the dessert.",
           "ja": "どれも良かったです。特にデザートが最高でした。"
+        },
+        {
+          "en": "Could we see the menu in English, please?",
+          "ja": "英語のメニューを見せてもらえますか？"
+        },
+        {
+          "en": "What do you recommend for someone who doesn't eat meat?",
+          "ja": "肉を食べない人向けには何がおすすめですか？"
+        },
+        { "en": "Could we have some tap water as well?", "ja": "お水もいただけますか？" },
+        {
+          "en": "Sorry, we ordered this without onions.",
+          "ja": "すみません、これは玉ねぎ抜きで注文したはずです。"
+        },
+        {
+          "en": "Could we get the check whenever you're ready?",
+          "ja": "準備できたら、お会計をお願いします。"
         }
       ]
     },
@@ -160,6 +211,26 @@
         {
           "en": "Thanks for your feedback; I'll revise the draft today.",
           "ja": "フィードバックありがとうございます。今日中にドラフトを修正します。"
+        },
+        {
+          "en": "Could we move this meeting to tomorrow morning?",
+          "ja": "この会議を明日の午前に変更できますか？"
+        },
+        {
+          "en": "I'll prepare a brief summary by the end of the day.",
+          "ja": "本日中に簡単な要約を用意します。"
+        },
+        {
+          "en": "Let's align on priorities before we allocate resources.",
+          "ja": "リソース配分の前に優先順位をそろえましょう。"
+        },
+        {
+          "en": "We should set clear ownership for each task.",
+          "ja": "各タスクの担当を明確にすべきです。"
+        },
+        {
+          "en": "Please let me know if anything is unclear.",
+          "ja": "不明点があれば知らせてください。"
         }
       ]
     },
@@ -172,8 +243,8 @@
           "ja": "この電車は何番ホームから出ますか？"
         },
         {
-          "en": "I'd like to check in, and I have a reservation under Maeda.",
-          "ja": "チェックインをお願いします。予約名はMaedaです。"
+          "en": "I'd like to check in, and I have a reservation under Tanaka.",
+          "ja": "チェックインをお願いします。予約名はTanakaです。"
         },
         {
           "en": "Is breakfast included in the room rate?",
@@ -206,7 +277,18 @@
         {
           "en": "Could you take a photo of us in front of this building?",
           "ja": "この建物の前で、私たちの写真を撮ってもらえますか？"
-        }
+        },
+        {
+          "en": "Where can I buy a day pass for public transport?",
+          "ja": "公共交通機関の1日乗車券はどこで買えますか？"
+        },
+        { "en": "Is this seat taken?", "ja": "この席、空いていますか？" },
+        { "en": "Could you help me with this luggage?", "ja": "この荷物を手伝ってもらえますか？" },
+        {
+          "en": "What time should I arrive at the gate?",
+          "ja": "ゲートには何時に着いていればいいですか？"
+        },
+        { "en": "Is there free Wi-Fi at the airport?", "ja": "空港に無料Wi-Fiはありますか？" }
       ]
     },
     {
@@ -252,6 +334,23 @@
         {
           "en": "I borrowed this book last week, and I'll return it tomorrow.",
           "ja": "先週この本を借りたので、明日返します。"
+        },
+        {
+          "en": "Could you go over that example one more time?",
+          "ja": "その例をもう一度説明してもらえますか？"
+        },
+        {
+          "en": "I missed class yesterday; did I miss anything important?",
+          "ja": "昨日授業を休んだのですが、重要な内容はありましたか？"
+        },
+        {
+          "en": "Can we form a study group for the exam?",
+          "ja": "試験に向けて勉強会を作ってもいいですか？"
+        },
+        { "en": "When will the grades be posted?", "ja": "成績はいつ公開されますか？" },
+        {
+          "en": "May I ask a question about the syllabus?",
+          "ja": "シラバスについて質問してもいいですか？"
         }
       ]
     },
@@ -295,6 +394,20 @@
         {
           "en": "I'd like a copy of my test results, please.",
           "ja": "検査結果のコピーをいただけますか？"
+        },
+        { "en": "I've been coughing for about three days.", "ja": "3日ほど咳が続いています。" },
+        {
+          "en": "On a scale of one to ten, the pain is about six.",
+          "ja": "痛みを10段階で言うと、6くらいです。"
+        },
+        { "en": "I started feeling dizzy this morning.", "ja": "今朝からめまいを感じ始めました。" },
+        {
+          "en": "Should I come back for a follow-up visit?",
+          "ja": "再診のためにもう一度来たほうがいいですか？"
+        },
+        {
+          "en": "Can I take this medicine on an empty stomach?",
+          "ja": "この薬は空腹時に飲んでも大丈夫ですか？"
         }
       ]
     },
