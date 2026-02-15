@@ -16,6 +16,12 @@ export interface AzureWordResult {
   Word: string;
   AccuracyScore?: number;
   ErrorType?: string;
+  Phonemes?: AzurePhonemeResult[];
+}
+
+export interface AzurePhonemeResult {
+  Phoneme: string;
+  AccuracyScore?: number;
 }
 
 export interface AzureNBestResult {
@@ -55,7 +61,7 @@ export class AzureSpeechClient implements IAzureSpeechClient {
     const params: AzurePronunciationParams = {
       ReferenceText: referenceText,
       GradingSystem: "HundredMark",
-      Granularity: "Word",
+      Granularity: "Phoneme",
       Dimension: "Comprehensive",
       EnableProsodyAssessment: "True",
     };
@@ -190,6 +196,10 @@ export class AzureSpeechClient implements IAzureSpeechClient {
         word: word.Word,
         accuracyScore: word.AccuracyScore || 0,
         errorType: this.normalizeErrorType(word.ErrorType),
+        phonemes: (word.Phonemes || []).map((phoneme) => ({
+          phoneme: phoneme.Phoneme,
+          accuracyScore: phoneme.AccuracyScore || 0,
+        })),
       })),
     };
   }
@@ -199,11 +209,21 @@ export class AzureSpeechClient implements IAzureSpeechClient {
    */
   private normalizeErrorType(
     errorType?: string,
-  ): "None" | "Mispronunciation" | "Omission" | "Insertion" {
+  ):
+    | "None"
+    | "Mispronunciation"
+    | "Omission"
+    | "Insertion"
+    | "UnexpectedBreak"
+    | "MissingBreak"
+    | "Monotone" {
     if (!errorType || errorType === "None") return "None";
     if (errorType === "Mispronunciation") return "Mispronunciation";
     if (errorType === "Omission") return "Omission";
     if (errorType === "Insertion") return "Insertion";
+    if (errorType === "UnexpectedBreak") return "UnexpectedBreak";
+    if (errorType === "MissingBreak") return "MissingBreak";
+    if (errorType === "Monotone") return "Monotone";
     return "None";
   }
 }

@@ -25,6 +25,12 @@ export interface WordAssessment {
   word: string;
   accuracyScore: number;
   errorType: WordErrorType;
+  phonemes: PhonemeAssessment[];
+}
+
+export interface PhonemeAssessment {
+  phoneme: string;
+  accuracyScore: number;
 }
 
 export interface AssessmentResult {

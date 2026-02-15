@@ -1,4 +1,5 @@
 import {
+  CircleHelp,
   ChevronLeft,
   ChevronRight,
   Dice5,
@@ -52,6 +53,35 @@ type SentenceToken = {
   token: string;
   assessment?: WordAssessment;
 };
+
+const SCORE_LABELS: Array<{
+  key: keyof AssessmentResult["scores"];
+  label: string;
+  helpText: string;
+}> = [
+  {
+    key: "accuracyScore",
+    label: "Accuracy（正確性）",
+    helpText: "音素がネイティブ発音にどれだけ近いかを示します。",
+  },
+  {
+    key: "fluencyScore",
+    label: "Fluency（流暢さ）",
+    helpText: "話すテンポや単語間のつながりの自然さを示します。",
+  },
+  {
+    key: "completenessScore",
+    label: "Completeness（完成度）",
+    helpText: "参照文に対して、必要な単語をどれだけ言えたかを示します。",
+  },
+  {
+    key: "prosodyScore",
+    label: "Prosody（韻律）",
+    helpText: "抑揚、リズム、アクセントなど話し方の自然さを示します。",
+  },
+];
+const WORD_PHONEME_HELP_TEXT =
+  "単語スコアは音素スコアの単純平均ではありません。音素境界や連結発話の影響で音素が低くても、単語全体が通じると単語スコアは高くなる場合があります。";
 
 const normalizeWord = (value: string): string => value.toLowerCase().replace(/[^a-z0-9']/g, "");
 const hasMultibyteCharacters = (value: string): boolean => /[^\x00-\x7F]/.test(value);
@@ -366,6 +396,16 @@ const PronunciationAssessment = () => {
     return getScoreColor(assessment.accuracyScore);
   };
 
+  const getPhonemeBadgeClass = (score: number): string => {
+    if (score >= 80) {
+      return "border-emerald-200 bg-emerald-50 text-emerald-700";
+    }
+    if (score >= 60) {
+      return "border-amber-200 bg-amber-50 text-amber-700";
+    }
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  };
+
   return (
     <div className="space-y-6">
       <Card className="overflow-hidden border-slate-900/10 bg-white/80 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.55)] backdrop-blur dark:border-white/10 dark:bg-slate-900/65">
@@ -585,9 +625,6 @@ const PronunciationAssessment = () => {
         <Card className="border-slate-900/10 bg-white/90 shadow-2xl dark:border-white/10 dark:bg-slate-950/70">
           <CardHeader>
             <CardTitle>Assessment Results</CardTitle>
-            <CardDescription className="text-base">
-              Recognized: {result.recognizedText}
-            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900">
@@ -599,28 +636,94 @@ const PronunciationAssessment = () => {
             </div>
 
             <div className="space-y-4">
-              {[
-                { key: "Accuracy", value: result.scores.accuracyScore },
-                { key: "Fluency", value: result.scores.fluencyScore },
-                { key: "Completeness", value: result.scores.completenessScore },
-                { key: "Prosody", value: result.scores.prosodyScore },
-              ].map((score) => (
+              {SCORE_LABELS.map((score) => (
                 <div key={score.key} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">
-                      {score.key}
-                    </span>
-                    <span className={`font-semibold ${getScoreColor(score.value)}`}>
-                      {score.value.toFixed(1)}
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-medium text-slate-700 dark:text-slate-300">
+                        {score.label}
+                      </span>
+                      <div className="group relative inline-flex items-center">
+                        <button
+                          type="button"
+                          aria-label={`${score.label} help`}
+                          title={score.helpText}
+                          className="inline-flex size-4 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:border-sky-400 hover:text-sky-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                        >
+                          <CircleHelp className="size-3" />
+                        </button>
+                        <div className="pointer-events-none absolute top-6 left-1/2 z-20 w-64 -translate-x-1/2 rounded-lg border border-slate-200 bg-white p-2.5 text-xs leading-relaxed text-slate-700 opacity-0 shadow-lg transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                          {score.helpText}
+                        </div>
+                      </div>
+                    </div>
+                    <span className={`font-semibold ${getScoreColor(result.scores[score.key])}`}>
+                      {result.scores[score.key].toFixed(1)}
                     </span>
                   </div>
                   <Progress
-                    value={score.value}
-                    className={`h-2.5 ${getScoreBarClass(score.value)}`}
+                    value={result.scores[score.key]}
+                    className={`h-2.5 ${getScoreBarClass(result.scores[score.key])}`}
                   />
                 </div>
               ))}
             </div>
+
+            {result.words.length > 0 && (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold tracking-[0.14em] text-slate-500 uppercase">
+                    Word / Phoneme Breakdown
+                  </h3>
+                  <div className="group relative inline-flex items-center">
+                    <button
+                      type="button"
+                      aria-label="Word / Phoneme score help"
+                      title={WORD_PHONEME_HELP_TEXT}
+                      className="inline-flex size-5 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:border-sky-400 hover:text-sky-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300"
+                    >
+                      <CircleHelp className="size-3.5" />
+                    </button>
+                    <div className="pointer-events-none absolute top-7 left-1/2 z-20 w-72 -translate-x-1/2 rounded-lg border border-slate-200 bg-white p-2.5 text-xs leading-relaxed text-slate-700 opacity-0 shadow-lg transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                      {WORD_PHONEME_HELP_TEXT}
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {result.words.map((word, index) => (
+                    <div
+                      key={`${word.word}-${index}`}
+                      className="rounded-xl border border-slate-200 bg-white p-3"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-sm font-semibold text-slate-900">{word.word}</span>
+                        <span
+                          className={`text-sm font-semibold ${getScoreColor(word.accuracyScore)}`}
+                        >
+                          {word.accuracyScore.toFixed(1)}
+                        </span>
+                      </div>
+                      {word.phonemes.length > 0 && (
+                        <div className="mt-2 flex flex-wrap gap-1.5">
+                          {word.phonemes.map((phoneme, phonemeIndex) => (
+                            <span
+                              key={`${phoneme.phoneme}-${phonemeIndex}`}
+                              className={cn(
+                                "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium",
+                                getPhonemeBadgeClass(phoneme.accuracyScore),
+                              )}
+                            >
+                              <span>{phoneme.phoneme}</span>
+                              <span>{phoneme.accuracyScore.toFixed(0)}</span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
