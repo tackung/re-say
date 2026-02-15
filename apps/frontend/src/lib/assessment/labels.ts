@@ -11,9 +11,9 @@ const ERROR_LABELS: Record<WordErrorType, string> = {
 };
 
 export const getScoreColor = (score: number): string => {
-  if (score >= 80) return "#4caf50";
-  if (score >= 60) return "#ff9800";
-  return "#f44336";
+  if (score >= 80) return "text-emerald-600 dark:text-emerald-400";
+  if (score >= 60) return "text-amber-400 dark:text-amber-400";
+  return "text-rose-600 dark:text-rose-400";
 };
 
 export const getErrorTypeLabel = (errorType: WordErrorType): string => {

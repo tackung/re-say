@@ -1,13 +1,32 @@
-import { ChevronLeft, ChevronRight, Dice5, Mic, OctagonMinus, Sparkles, TriangleAlert } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Dice5,
+  Mic,
+  OctagonMinus,
+  Sparkles,
+  TriangleAlert,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AssessmentApiResponse, AssessmentResult, WordAssessment } from "../../../../packages/shared/types/assessment";
+import {
+  AssessmentApiResponse,
+  AssessmentResult,
+  WordAssessment,
+} from "../../../../packages/shared/types/assessment";
+import { getScoreColor } from "../lib/assessment/labels";
 import { convertToWav } from "../lib/audio/wavConverter";
 import { cn } from "../lib/utils";
 import { assessPronunciation } from "../services/assessmentApi";
 import contents from "../data/contents.json";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 type PracticePhrase = {
@@ -25,7 +44,9 @@ type PracticeContents = {
 };
 
 const practiceContents = contents as PracticeContents;
-const practicePackages = practiceContents.packages.filter((entry) => entry.phrases.length > 0);
+const practicePackages = practiceContents.packages.filter(
+  (entry) => entry.phrases.length > 0,
+);
 const initialPackageIndex = practicePackages.length > 0 ? 0 : -1;
 
 type SentenceToken = {
@@ -33,9 +54,13 @@ type SentenceToken = {
   assessment?: WordAssessment;
 };
 
-const normalizeWord = (value: string): string => value.toLowerCase().replace(/[^a-z0-9']/g, "");
+const normalizeWord = (value: string): string =>
+  value.toLowerCase().replace(/[^a-z0-9']/g, "");
 
-const buildSentenceTokens = (referenceText: string, words: WordAssessment[]): SentenceToken[] => {
+const buildSentenceTokens = (
+  referenceText: string,
+  words: WordAssessment[],
+): SentenceToken[] => {
   const tokens = referenceText.split(/\s+/).filter(Boolean);
   let cursor = 0;
 
@@ -76,7 +101,8 @@ const getSupportedMimeType = (): string => {
 };
 
 const PronunciationAssessment = () => {
-  const [selectedPackageIndex, setSelectedPackageIndex] = useState(initialPackageIndex);
+  const [selectedPackageIndex, setSelectedPackageIndex] =
+    useState(initialPackageIndex);
   const [selectedPhraseIndex, setSelectedPhraseIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -87,10 +113,16 @@ const PronunciationAssessment = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const selectedPackage =
-    selectedPackageIndex >= 0 ? practicePackages[selectedPackageIndex] : undefined;
+    selectedPackageIndex >= 0
+      ? practicePackages[selectedPackageIndex]
+      : undefined;
   const availablePhrases = selectedPackage?.phrases ?? [];
   const selectedPhrase =
-    availablePhrases.length > 0 ? availablePhrases[Math.min(selectedPhraseIndex, availablePhrases.length - 1)] : undefined;
+    availablePhrases.length > 0
+      ? availablePhrases[
+          Math.min(selectedPhraseIndex, availablePhrases.length - 1)
+        ]
+      : undefined;
   const referenceText = selectedPhrase?.en ?? "";
   const sentenceTokens = useMemo(
     () => buildSentenceTokens(referenceText, result?.words ?? []),
@@ -129,7 +161,10 @@ const PronunciationAssessment = () => {
 
     try {
       const wavBlob = await convertToWav(audioBlob);
-      const data: AssessmentApiResponse = await assessPronunciation(wavBlob, referenceText);
+      const data: AssessmentApiResponse = await assessPronunciation(
+        wavBlob,
+        referenceText,
+      );
 
       if (data.status === "error") {
         throw new Error(data.error);
@@ -137,7 +172,9 @@ const PronunciationAssessment = () => {
 
       setResult(data.result);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Failed to process audio");
+      setError(
+        caught instanceof Error ? caught.message : "Failed to process audio",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -213,37 +250,21 @@ const PronunciationAssessment = () => {
     setError(null);
   }, [selectedPhraseIndex]);
 
-  const getScoreToneClass = (score: number): string => {
-    if (score >= 80) {
-      return "text-emerald-600 dark:text-emerald-400";
-    }
-    if (score >= 60) {
-      return "text-amber-600 dark:text-amber-400";
-    }
-    return "text-rose-600 dark:text-rose-400";
-  };
-
   const getScoreBarClass = (score: number): string => {
     if (score >= 80) {
-      return "[&>div]:bg-emerald-500";
+      return "[&>div]:bg-emerald-600";
     }
     if (score >= 60) {
-      return "[&>div]:bg-amber-500";
+      return "[&>div]:bg-amber-400";
     }
-    return "[&>div]:bg-rose-500";
+    return "[&>div]:bg-rose-600";
   };
 
   const getWordTokenClass = (assessment?: WordAssessment): string => {
     if (!assessment) {
       return "text-slate-700";
     }
-    if (assessment.errorType !== "None" || assessment.accuracyScore < 60) {
-      return "text-rose-700";
-    }
-    if (assessment.accuracyScore < 80) {
-      return "text-amber-700";
-    }
-    return "text-emerald-700";
+    return getScoreColor(assessment.accuracyScore);
   };
 
   return (
@@ -257,7 +278,9 @@ const PronunciationAssessment = () => {
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="space-y-1.5">
-            <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">Package</span>
+            <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+              Package
+            </span>
             <div className="flex gap-2 overflow-x-auto pb-1">
               {practicePackages.map((pkg, index) => (
                 <button
@@ -279,10 +302,14 @@ const PronunciationAssessment = () => {
 
           <div className="grid gap-4 md:grid-cols-2">
             <label className="space-y-1.5">
-              <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">Sentence</span>
+              <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+                Sentence
+              </span>
               <select
                 value={selectedPhraseIndex}
-                onChange={(event) => setSelectedPhraseIndex(Number(event.target.value))}
+                onChange={(event) =>
+                  setSelectedPhraseIndex(Number(event.target.value))
+                }
                 className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
               >
                 {availablePhrases.map((phrase, index) => (
@@ -300,15 +327,30 @@ const PronunciationAssessment = () => {
                 Read This
               </span>
               <div className="flex items-center gap-1.5">
-                <Button onClick={() => movePhraseSelection("prev")} variant="outline" size="sm" className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs">
+                <Button
+                  onClick={() => movePhraseSelection("prev")}
+                  variant="outline"
+                  size="sm"
+                  className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
+                >
                   <ChevronLeft className="size-3.5" />
                   Prev.
                 </Button>
-                <Button onClick={chooseRandomPhrase} variant="outline" size="sm" className="h-8 border-slate-300/80 bg-white/90 px-3 text-xs">
+                <Button
+                  onClick={chooseRandomPhrase}
+                  variant="outline"
+                  size="sm"
+                  className="h-8 border-slate-300/80 bg-white/90 px-3 text-xs"
+                >
                   <Dice5 className="size-3.5" />
                   Random
                 </Button>
-                <Button onClick={() => movePhraseSelection("next")} variant="outline" size="sm" className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs">
+                <Button
+                  onClick={() => movePhraseSelection("next")}
+                  variant="outline"
+                  size="sm"
+                  className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
+                >
                   Next
                   <ChevronRight className="size-3.5" />
                 </Button>
@@ -325,7 +367,9 @@ const PronunciationAssessment = () => {
                         getWordTokenClass(item.assessment),
                       )}
                     >
-                      <span className="text-lg font-bold leading-tight sm:text-xl">{item.token}</span>
+                      <span className="text-lg font-bold leading-tight sm:text-xl">
+                        {item.token}
+                      </span>
                       {item.assessment && (
                         <span className="mt-0.5 text-[10px] font-semibold opacity-70">
                           {item.assessment.accuracyScore.toFixed(0)}
@@ -373,10 +417,15 @@ const PronunciationAssessment = () => {
         <Card>
           <CardHeader>
             <CardTitle>Analyzing pronunciation</CardTitle>
-            <CardDescription>Scoring from Azure Speech Service...</CardDescription>
+            <CardDescription>
+              Scoring from Azure Speech Service...
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Progress value={loadingProgress} className="h-2.5 [&>div]:bg-orange-500" />
+            <Progress
+              value={loadingProgress}
+              className="h-2.5 [&>div]:bg-orange-500"
+            />
           </CardContent>
         </Card>
       )}
@@ -393,12 +442,18 @@ const PronunciationAssessment = () => {
         <Card className="border-slate-900/10 bg-white/90 shadow-2xl dark:border-white/10 dark:bg-slate-950/70">
           <CardHeader>
             <CardTitle>Assessment Results</CardTitle>
-            <CardDescription className="text-base">Recognized: {result.recognizedText}</CardDescription>
+            <CardDescription className="text-base">
+              Recognized: {result.recognizedText}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900">
-              <div className="text-xs tracking-[0.2em] text-slate-500 uppercase">Overall Score</div>
-              <div className={`mt-2 text-6xl font-black ${getScoreToneClass(result.scores.pronScore)}`}>
+              <div className="text-xs tracking-[0.2em] text-slate-500 uppercase">
+                Overall Score
+              </div>
+              <div
+                className={`mt-2 text-6xl font-black ${getScoreColor(result.scores.pronScore)}`}
+              >
                 {result.scores.pronScore.toFixed(1)}
               </div>
               <div className="text-sm text-slate-500">out of 100</div>
@@ -413,10 +468,19 @@ const PronunciationAssessment = () => {
               ].map((score) => (
                 <div key={score.key} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">{score.key}</span>
-                    <span className={`font-semibold ${getScoreToneClass(score.value)}`}>{score.value.toFixed(1)}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">
+                      {score.key}
+                    </span>
+                    <span
+                      className={`font-semibold ${getScoreColor(score.value)}`}
+                    >
+                      {score.value.toFixed(1)}
+                    </span>
                   </div>
-                  <Progress value={score.value} className={`h-2.5 ${getScoreBarClass(score.value)}`} />
+                  <Progress
+                    value={score.value}
+                    className={`h-2.5 ${getScoreBarClass(score.value)}`}
+                  />
                 </div>
               ))}
             </div>

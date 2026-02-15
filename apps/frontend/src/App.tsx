@@ -12,8 +12,14 @@ function App() {
       <section className="relative mx-auto w-full max-w-6xl space-y-8">
         <header className="space-y-4 text-center">
           <div className="flex items-center justify-center gap-3">
-            <img src="/app_icon.png" alt="re-say icon" className="h-12 w-12 rounded-2xl shadow-md ring-1 ring-black/10" />
-            <span className="text-2xl font-bold tracking-wide text-slate-900 dark:text-slate-100">re-say</span>
+            <img
+              src="/app_icon.png"
+              alt="re-say icon"
+              className="h-12 w-12 rounded-2xl shadow-md ring-1 ring-black/10"
+            />
+            <span className="text-2xl font-bold tracking-wide text-slate-900 dark:text-slate-100">
+              re-say
+            </span>
           </div>
           <h1 className="text-balance text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
             Speak Better With Curated Contexts
