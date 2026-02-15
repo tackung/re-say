@@ -22,7 +22,7 @@ re-say! is English pronunciation assessment web application using Azure Speech S
 - Word-by-word analysis with error detection
 
 ## Demo
-<img src="./images/re-say_demo.gif" alt="demo" width=60%>
+<img src="./images/re-say_demo.gif" alt="demo" width=25%>
 
 ## Tech Stack
 
