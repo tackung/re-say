@@ -3,106 +3,292 @@
     {
       "topic": "日々の雑談",
       "phrases": [
-        { "en": "I usually grab breakfast on the way to work.", "ja": "仕事に行く途中で朝食をさっと済ませることが多いです。" },
-        { "en": "Do you want to grab coffee after lunch?", "ja": "ランチのあと、コーヒーでもどう？" },
-        { "en": "The weather feels warmer than I expected today.", "ja": "今日は思っていたより暖かく感じるね。" },
-        { "en": "I've been really busy, but I'm doing fine.", "ja": "最近すごく忙しいけど、元気にやってるよ。" },
+        {
+          "en": "I usually grab breakfast on the way to work.",
+          "ja": "仕事に行く途中で朝食をさっと済ませることが多いです。"
+        },
+        {
+          "en": "Do you want to grab coffee after lunch?",
+          "ja": "ランチのあと、コーヒーでもどう？"
+        },
+        {
+          "en": "The weather feels warmer than I expected today.",
+          "ja": "今日は思っていたより暖かく感じるね。"
+        },
+        {
+          "en": "I've been really busy, but I'm doing fine.",
+          "ja": "最近すごく忙しいけど、元気にやってるよ。"
+        },
         { "en": "What have you been watching lately?", "ja": "最近、何を見てるの？" },
-        { "en": "I'm trying to get better sleep this week.", "ja": "今週はもっとしっかり寝るようにしてるんだ。" },
-        { "en": "That new cafe near the station is always crowded.", "ja": "駅の近くのあの新しいカフェ、いつも混んでるね。" },
-        { "en": "I'd rather walk than take a packed train.", "ja": "満員電車に乗るくらいなら歩くほうがいいな。" },
-        { "en": "Thanks for checking in; I really appreciate it.", "ja": "気にかけてくれてありがとう、本当にありがたいよ。" },
-        { "en": "Let's catch up again when things slow down.", "ja": "落ち着いたら、またゆっくり話そう。" }
+        {
+          "en": "I'm trying to get better sleep this week.",
+          "ja": "今週はもっとしっかり寝るようにしてるんだ。"
+        },
+        {
+          "en": "That new cafe near the station is always crowded.",
+          "ja": "駅の近くのあの新しいカフェ、いつも混んでるね。"
+        },
+        {
+          "en": "I'd rather walk than take a packed train.",
+          "ja": "満員電車に乗るくらいなら歩くほうがいいな。"
+        },
+        {
+          "en": "Thanks for checking in; I really appreciate it.",
+          "ja": "気にかけてくれてありがとう、本当にありがたいよ。"
+        },
+        {
+          "en": "Let's catch up again when things slow down.",
+          "ja": "落ち着いたら、またゆっくり話そう。"
+        }
       ]
     },
     {
       "topic": "買い物",
       "phrases": [
-        { "en": "Could I try this on in a different size?", "ja": "これ、別のサイズを試着してもいいですか？" },
+        {
+          "en": "Could I try this on in a different size?",
+          "ja": "これ、別のサイズを試着してもいいですか？"
+        },
         { "en": "Do you have this in black or navy?", "ja": "これの黒かネイビーはありますか？" },
-        { "en": "I'm looking for something durable but lightweight.", "ja": "丈夫だけど軽いものを探しています。" },
+        {
+          "en": "I'm looking for something durable but lightweight.",
+          "ja": "丈夫だけど軽いものを探しています。"
+        },
         { "en": "Is there a discount if I buy two?", "ja": "2つ買ったら割引はありますか？" },
-        { "en": "Could you wrap this as a gift, please?", "ja": "これをギフト用に包んでもらえますか？" },
+        {
+          "en": "Could you wrap this as a gift, please?",
+          "ja": "これをギフト用に包んでもらえますか？"
+        },
         { "en": "I'll pay by card if that's okay.", "ja": "よければカードで支払います。" },
-        { "en": "Where can I find skincare products for sensitive skin?", "ja": "敏感肌向けのスキンケア商品はどこにありますか？" },
-        { "en": "This is slightly over budget, so I'll think about it.", "ja": "これは予算を少し超えるので、少し考えます。" },
-        { "en": "Can I return this if it doesn't fit?", "ja": "合わなかった場合、返品できますか？" },
-        { "en": "Could you tell me when this will be back in stock?", "ja": "これが再入荷する時期を教えてもらえますか？" }
+        {
+          "en": "Where can I find skincare products for sensitive skin?",
+          "ja": "敏感肌向けのスキンケア商品はどこにありますか？"
+        },
+        {
+          "en": "This is slightly over budget, so I'll think about it.",
+          "ja": "これは予算を少し超えるので、少し考えます。"
+        },
+        {
+          "en": "Can I return this if it doesn't fit?",
+          "ja": "合わなかった場合、返品できますか？"
+        },
+        {
+          "en": "Could you tell me when this will be back in stock?",
+          "ja": "これが再入荷する時期を教えてもらえますか？"
+        }
       ]
     },
     {
       "topic": "レストラン",
       "phrases": [
         { "en": "Could we get a table by the window?", "ja": "窓際の席にしてもらえますか？" },
-        { "en": "I'm allergic to shellfish, so could you recommend something safe?", "ja": "甲殻類アレルギーがあるので、安全なメニューをおすすめしてもらえますか？" },
-        { "en": "Could you make this a little less spicy?", "ja": "これを少し辛さ控えめにしてもらえますか？" },
-        { "en": "I'll have the grilled chicken with steamed vegetables.", "ja": "グリルチキンと温野菜をお願いします。" },
+        {
+          "en": "I'm allergic to shellfish, so could you recommend something safe?",
+          "ja": "甲殻類アレルギーがあるので、安全なメニューをおすすめしてもらえますか？"
+        },
+        {
+          "en": "Could you make this a little less spicy?",
+          "ja": "これを少し辛さ控えめにしてもらえますか？"
+        },
+        {
+          "en": "I'll have the grilled chicken with steamed vegetables.",
+          "ja": "グリルチキンと温野菜をお願いします。"
+        },
         { "en": "Could we split the bill, please?", "ja": "お会計を別々にしてもらえますか？" },
         { "en": "Could I get this to go, please?", "ja": "これを持ち帰りにしてもらえますか？" },
-        { "en": "Is service included, or should we leave a tip?", "ja": "サービス料は含まれていますか、それともチップを置いたほうがいいですか？" },
-        { "en": "I'm still deciding, so could you give me a minute?", "ja": "まだ決めているので、少し時間をもらえますか？" },
-        { "en": "Could I have the dressing on the side?", "ja": "ドレッシングを別添えにしてもらえますか？" },
-        { "en": "Everything was great, especially the dessert.", "ja": "どれも良かったです。特にデザートが最高でした。" }
+        {
+          "en": "Is service included, or should we leave a tip?",
+          "ja": "サービス料は含まれていますか、それともチップを置いたほうがいいですか？"
+        },
+        {
+          "en": "I'm still deciding, so could you give me a minute?",
+          "ja": "まだ決めているので、少し時間をもらえますか？"
+        },
+        {
+          "en": "Could I have the dressing on the side?",
+          "ja": "ドレッシングを別添えにしてもらえますか？"
+        },
+        {
+          "en": "Everything was great, especially the dessert.",
+          "ja": "どれも良かったです。特にデザートが最高でした。"
+        }
       ]
     },
     {
       "topic": "ビジネス",
       "phrases": [
-        { "en": "Could you share the latest version before the meeting?", "ja": "会議前に最新版を共有してもらえますか？" },
-        { "en": "I'd like to clarify the scope and timeline.", "ja": "スコープとスケジュールを明確にしたいです。" },
-        { "en": "We need to review the risks before we proceed.", "ja": "進める前にリスクを確認する必要があります。" },
-        { "en": "I'm available after three if you want to discuss details.", "ja": "詳細を話すなら、3時以降なら対応できます。" },
-        { "en": "Let's prioritize tasks that have the highest impact.", "ja": "最も効果の高いタスクを優先しましょう。" },
-        { "en": "Could you walk me through the assumptions behind this forecast?", "ja": "この予測の前提を順を追って説明してもらえますか？" },
-        { "en": "We're slightly behind schedule, so we need a recovery plan.", "ja": "スケジュールが少し遅れているので、リカバリープランが必要です。" },
-        { "en": "Please flag any blockers as soon as they come up.", "ja": "障害要因が出たら、すぐに共有してください。" },
-        { "en": "I'll send a follow-up email with action items.", "ja": "対応事項をまとめたフォローアップメールを送ります。" },
-        { "en": "Thanks for your feedback; I'll revise the draft today.", "ja": "フィードバックありがとうございます。今日中にドラフトを修正します。" }
+        {
+          "en": "Could you share the latest version before the meeting?",
+          "ja": "会議前に最新版を共有してもらえますか？"
+        },
+        {
+          "en": "I'd like to clarify the scope and timeline.",
+          "ja": "スコープとスケジュールを明確にしたいです。"
+        },
+        {
+          "en": "We need to review the risks before we proceed.",
+          "ja": "進める前にリスクを確認する必要があります。"
+        },
+        {
+          "en": "I'm available after three if you want to discuss details.",
+          "ja": "詳細を話すなら、3時以降なら対応できます。"
+        },
+        {
+          "en": "Let's prioritize tasks that have the highest impact.",
+          "ja": "最も効果の高いタスクを優先しましょう。"
+        },
+        {
+          "en": "Could you walk me through the assumptions behind this forecast?",
+          "ja": "この予測の前提を順を追って説明してもらえますか？"
+        },
+        {
+          "en": "We're slightly behind schedule, so we need a recovery plan.",
+          "ja": "スケジュールが少し遅れているので、リカバリープランが必要です。"
+        },
+        {
+          "en": "Please flag any blockers as soon as they come up.",
+          "ja": "障害要因が出たら、すぐに共有してください。"
+        },
+        {
+          "en": "I'll send a follow-up email with action items.",
+          "ja": "対応事項をまとめたフォローアップメールを送ります。"
+        },
+        {
+          "en": "Thanks for your feedback; I'll revise the draft today.",
+          "ja": "フィードバックありがとうございます。今日中にドラフトを修正します。"
+        }
       ]
     },
     {
       "topic": "旅行",
       "phrases": [
-        { "en": "Could you tell me which platform this train leaves from?", "ja": "この電車は何番ホームから出ますか？" },
-        { "en": "I'd like to check in, and I have a reservation under Maeda.", "ja": "チェックインをお願いします。予約名はMaedaです。" },
-        { "en": "Is breakfast included in the room rate?", "ja": "朝食は宿泊料金に含まれていますか？" },
-        { "en": "Could you call a taxi to the airport for six thirty?", "ja": "6時30分に空港行きのタクシーを呼んでもらえますか？" },
-        { "en": "I think I took the wrong bus, so where should I transfer?", "ja": "バスを間違えたみたいなので、どこで乗り換えればいいですか？" },
-        { "en": "Do I need to validate this ticket before boarding?", "ja": "乗車前にこのチケットの打刻は必要ですか？" },
-        { "en": "Could you recommend a local restaurant within walking distance?", "ja": "歩いて行ける範囲で、地元のおすすめレストランはありますか？" },
-        { "en": "My flight was delayed, so I might miss the connection.", "ja": "便が遅れたので、乗り継ぎに間に合わないかもしれません。" },
-        { "en": "Is there a pharmacy nearby that's open late?", "ja": "この近くに遅くまで開いている薬局はありますか？" },
-        { "en": "Could you take a photo of us in front of this building?", "ja": "この建物の前で、私たちの写真を撮ってもらえますか？" }
+        {
+          "en": "Could you tell me which platform this train leaves from?",
+          "ja": "この電車は何番ホームから出ますか？"
+        },
+        {
+          "en": "I'd like to check in, and I have a reservation under Maeda.",
+          "ja": "チェックインをお願いします。予約名はMaedaです。"
+        },
+        {
+          "en": "Is breakfast included in the room rate?",
+          "ja": "朝食は宿泊料金に含まれていますか？"
+        },
+        {
+          "en": "Could you call a taxi to the airport for six thirty?",
+          "ja": "6時30分に空港行きのタクシーを呼んでもらえますか？"
+        },
+        {
+          "en": "I think I took the wrong bus, so where should I transfer?",
+          "ja": "バスを間違えたみたいなので、どこで乗り換えればいいですか？"
+        },
+        {
+          "en": "Do I need to validate this ticket before boarding?",
+          "ja": "乗車前にこのチケットの打刻は必要ですか？"
+        },
+        {
+          "en": "Could you recommend a local restaurant within walking distance?",
+          "ja": "歩いて行ける範囲で、地元のおすすめレストランはありますか？"
+        },
+        {
+          "en": "My flight was delayed, so I might miss the connection.",
+          "ja": "便が遅れたので、乗り継ぎに間に合わないかもしれません。"
+        },
+        {
+          "en": "Is there a pharmacy nearby that's open late?",
+          "ja": "この近くに遅くまで開いている薬局はありますか？"
+        },
+        {
+          "en": "Could you take a photo of us in front of this building?",
+          "ja": "この建物の前で、私たちの写真を撮ってもらえますか？"
+        }
       ]
     },
     {
       "topic": "学校",
       "phrases": [
-        { "en": "Could you explain this assignment in a little more detail?", "ja": "この課題について、もう少し詳しく説明してもらえますか？" },
-        { "en": "I couldn't catch the last part of what you said.", "ja": "あなたが言った最後の部分が聞き取れませんでした。" },
-        { "en": "I'm working on a group project about climate policy.", "ja": "気候政策に関するグループプロジェクトに取り組んでいます。" },
-        { "en": "Would it be possible to get an extension until Friday?", "ja": "提出期限を金曜日まで延長していただくことは可能ですか？" },
-        { "en": "I'd like feedback on how to improve this paragraph.", "ja": "この段落の改善点についてフィードバックをいただきたいです。" },
-        { "en": "Could we switch partners for the next activity?", "ja": "次の活動ではペアを替えてもいいですか？" },
-        { "en": "I'll submit the report once I finish the references.", "ja": "参考文献を仕上げたらレポートを提出します。" },
-        { "en": "I'm struggling with this concept, so could we review it again?", "ja": "この概念がうまく理解できないので、もう一度復習してもらえますか？" },
-        { "en": "Is attendance required for the optional workshop?", "ja": "任意のワークショップですが、出席は必須ですか？" },
-        { "en": "I borrowed this book last week, and I'll return it tomorrow.", "ja": "先週この本を借りたので、明日返します。" }
+        {
+          "en": "Could you explain this assignment in a little more detail?",
+          "ja": "この課題について、もう少し詳しく説明してもらえますか？"
+        },
+        {
+          "en": "I couldn't catch the last part of what you said.",
+          "ja": "あなたが言った最後の部分が聞き取れませんでした。"
+        },
+        {
+          "en": "I'm working on a group project about climate policy.",
+          "ja": "気候政策に関するグループプロジェクトに取り組んでいます。"
+        },
+        {
+          "en": "Would it be possible to get an extension until Friday?",
+          "ja": "提出期限を金曜日まで延長していただくことは可能ですか？"
+        },
+        {
+          "en": "I'd like feedback on how to improve this paragraph.",
+          "ja": "この段落の改善点についてフィードバックをいただきたいです。"
+        },
+        {
+          "en": "Could we switch partners for the next activity?",
+          "ja": "次の活動ではペアを替えてもいいですか？"
+        },
+        {
+          "en": "I'll submit the report once I finish the references.",
+          "ja": "参考文献を仕上げたらレポートを提出します。"
+        },
+        {
+          "en": "I'm struggling with this concept, so could we review it again?",
+          "ja": "この概念がうまく理解できないので、もう一度復習してもらえますか？"
+        },
+        {
+          "en": "Is attendance required for the optional workshop?",
+          "ja": "任意のワークショップですが、出席は必須ですか？"
+        },
+        {
+          "en": "I borrowed this book last week, and I'll return it tomorrow.",
+          "ja": "先週この本を借りたので、明日返します。"
+        }
       ]
     },
     {
       "topic": "病院",
       "phrases": [
-        { "en": "I've had a sore throat and a fever since yesterday.", "ja": "昨日から喉の痛みと熱があります。" },
-        { "en": "The pain gets worse when I take a deep breath.", "ja": "深呼吸すると痛みが強くなります。" },
+        {
+          "en": "I've had a sore throat and a fever since yesterday.",
+          "ja": "昨日から喉の痛みと熱があります。"
+        },
+        {
+          "en": "The pain gets worse when I take a deep breath.",
+          "ja": "深呼吸すると痛みが強くなります。"
+        },
         { "en": "I'm allergic to penicillin.", "ja": "ペニシリンにアレルギーがあります。" },
-        { "en": "Could you explain the test results in plain language?", "ja": "検査結果をわかりやすい言葉で説明してもらえますか？" },
-        { "en": "How often should I take this medicine?", "ja": "この薬はどのくらいの頻度で飲めばいいですか？" },
-        { "en": "Are there any side effects I should watch for?", "ja": "注意すべき副作用はありますか？" },
-        { "en": "Should I avoid exercise until I recover?", "ja": "回復するまで運動は控えたほうがいいですか？" },
-        { "en": "Could you write down the instructions for me?", "ja": "指示内容を書いてもらえますか？" },
-        { "en": "Who should I contact if my symptoms get worse?", "ja": "症状が悪化したら、誰に連絡すればいいですか？" },
-        { "en": "I'd like a copy of my test results, please.", "ja": "検査結果のコピーをいただけますか？" }
+        {
+          "en": "Could you explain the test results in plain language?",
+          "ja": "検査結果をわかりやすい言葉で説明してもらえますか？"
+        },
+        {
+          "en": "How often should I take this medicine?",
+          "ja": "この薬はどのくらいの頻度で飲めばいいですか？"
+        },
+        {
+          "en": "Are there any side effects I should watch for?",
+          "ja": "注意すべき副作用はありますか？"
+        },
+        {
+          "en": "Should I avoid exercise until I recover?",
+          "ja": "回復するまで運動は控えたほうがいいですか？"
+        },
+        {
+          "en": "Could you write down the instructions for me?",
+          "ja": "指示内容を書いてもらえますか？"
+        },
+        {
+          "en": "Who should I contact if my symptoms get worse?",
+          "ja": "症状が悪化したら、誰に連絡すればいいですか？"
+        },
+        {
+          "en": "I'd like a copy of my test results, please.",
+          "ja": "検査結果のコピーをいただけますか？"
+        }
       ]
     }
   ]

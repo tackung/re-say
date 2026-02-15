@@ -58,7 +58,9 @@ export const convertToWav = async (blob: Blob): Promise<Blob> => {
     const decodedBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
     if (!hasAudibleSound(decodedBuffer)) {
-      throw new Error("No audio detected in recording. Please speak louder or check your microphone.");
+      throw new Error(
+        "No audio detected in recording. Please speak louder or check your microphone.",
+      );
     }
 
     const targetSampleRate = 16000;

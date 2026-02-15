@@ -20,13 +20,7 @@ import { assessPronunciation } from "../services/assessmentApi";
 import contents from "../data/contents.json";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
 type PracticePhrase = {
@@ -44,9 +38,7 @@ type PracticeContents = {
 };
 
 const practiceContents = contents as PracticeContents;
-const practicePackages = practiceContents.packages.filter(
-  (entry) => entry.phrases.length > 0,
-);
+const practicePackages = practiceContents.packages.filter((entry) => entry.phrases.length > 0);
 const initialPackageIndex = practicePackages.length > 0 ? 0 : -1;
 
 type SentenceToken = {
@@ -54,13 +46,9 @@ type SentenceToken = {
   assessment?: WordAssessment;
 };
 
-const normalizeWord = (value: string): string =>
-  value.toLowerCase().replace(/[^a-z0-9']/g, "");
+const normalizeWord = (value: string): string => value.toLowerCase().replace(/[^a-z0-9']/g, "");
 
-const buildSentenceTokens = (
-  referenceText: string,
-  words: WordAssessment[],
-): SentenceToken[] => {
+const buildSentenceTokens = (referenceText: string, words: WordAssessment[]): SentenceToken[] => {
   const tokens = referenceText.split(/\s+/).filter(Boolean);
   let cursor = 0;
 
@@ -101,8 +89,7 @@ const getSupportedMimeType = (): string => {
 };
 
 const PronunciationAssessment = () => {
-  const [selectedPackageIndex, setSelectedPackageIndex] =
-    useState(initialPackageIndex);
+  const [selectedPackageIndex, setSelectedPackageIndex] = useState(initialPackageIndex);
   const [selectedPhraseIndex, setSelectedPhraseIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -113,15 +100,11 @@ const PronunciationAssessment = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const selectedPackage =
-    selectedPackageIndex >= 0
-      ? practicePackages[selectedPackageIndex]
-      : undefined;
+    selectedPackageIndex >= 0 ? practicePackages[selectedPackageIndex] : undefined;
   const availablePhrases = selectedPackage?.phrases ?? [];
   const selectedPhrase =
     availablePhrases.length > 0
-      ? availablePhrases[
-          Math.min(selectedPhraseIndex, availablePhrases.length - 1)
-        ]
+      ? availablePhrases[Math.min(selectedPhraseIndex, availablePhrases.length - 1)]
       : undefined;
   const referenceText = selectedPhrase?.en ?? "";
   const sentenceTokens = useMemo(
@@ -161,10 +144,7 @@ const PronunciationAssessment = () => {
 
     try {
       const wavBlob = await convertToWav(audioBlob);
-      const data: AssessmentApiResponse = await assessPronunciation(
-        wavBlob,
-        referenceText,
-      );
+      const data: AssessmentApiResponse = await assessPronunciation(wavBlob, referenceText);
 
       if (data.status === "error") {
         throw new Error(data.error);
@@ -172,9 +152,7 @@ const PronunciationAssessment = () => {
 
       setResult(data.result);
     } catch (caught) {
-      setError(
-        caught instanceof Error ? caught.message : "Failed to process audio",
-      );
+      setError(caught instanceof Error ? caught.message : "Failed to process audio");
     } finally {
       setIsLoading(false);
     }
@@ -307,9 +285,7 @@ const PronunciationAssessment = () => {
               </span>
               <select
                 value={selectedPhraseIndex}
-                onChange={(event) =>
-                  setSelectedPhraseIndex(Number(event.target.value))
-                }
+                onChange={(event) => setSelectedPhraseIndex(Number(event.target.value))}
                 className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
               >
                 {availablePhrases.map((phrase, index) => (
@@ -417,15 +393,10 @@ const PronunciationAssessment = () => {
         <Card>
           <CardHeader>
             <CardTitle>Analyzing pronunciation</CardTitle>
-            <CardDescription>
-              Scoring from Azure Speech Service...
-            </CardDescription>
+            <CardDescription>Scoring from Azure Speech Service...</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Progress
-              value={loadingProgress}
-              className="h-2.5 [&>div]:bg-orange-500"
-            />
+            <Progress value={loadingProgress} className="h-2.5 [&>div]:bg-orange-500" />
           </CardContent>
         </Card>
       )}
@@ -448,12 +419,8 @@ const PronunciationAssessment = () => {
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center dark:border-slate-700 dark:bg-slate-900">
-              <div className="text-xs tracking-[0.2em] text-slate-500 uppercase">
-                Overall Score
-              </div>
-              <div
-                className={`mt-2 text-6xl font-black ${getScoreColor(result.scores.pronScore)}`}
-              >
+              <div className="text-xs tracking-[0.2em] text-slate-500 uppercase">Overall Score</div>
+              <div className={`mt-2 text-6xl font-black ${getScoreColor(result.scores.pronScore)}`}>
                 {result.scores.pronScore.toFixed(1)}
               </div>
               <div className="text-sm text-slate-500">out of 100</div>
@@ -471,9 +438,7 @@ const PronunciationAssessment = () => {
                     <span className="font-medium text-slate-700 dark:text-slate-300">
                       {score.key}
                     </span>
-                    <span
-                      className={`font-semibold ${getScoreColor(score.value)}`}
-                    >
+                    <span className={`font-semibold ${getScoreColor(score.value)}`}>
                       {score.value.toFixed(1)}
                     </span>
                   </div>

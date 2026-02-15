@@ -1,14 +1,14 @@
 /**
  * Azure Speech Service クライアント
  */
-import { Environment } from '../config/environment.js';
-import { AssessmentResult } from '../../domain/types/assessment.js';
+import { Environment } from "../config/environment.js";
+import { AssessmentResult } from "../../domain/types/assessment.js";
 
 export interface AzurePronunciationParams {
   ReferenceText: string;
-  GradingSystem: 'FivePoint' | 'HundredMark';
-  Granularity: 'Phoneme' | 'Word' | 'FullText';
-  Dimension: 'Basic' | 'Comprehensive';
+  GradingSystem: "FivePoint" | "HundredMark";
+  Granularity: "Phoneme" | "Word" | "FullText";
+  Dimension: "Basic" | "Comprehensive";
   EnableProsodyAssessment: string;
 }
 
@@ -48,48 +48,45 @@ export class AzureSpeechClient implements IAzureSpeechClient {
   /**
    * 発音評価を実行
    */
-  async assessPronunciation(
-    audioData: Buffer,
-    referenceText: string,
-  ): Promise<AssessmentResult> {
+  async assessPronunciation(audioData: Buffer, referenceText: string): Promise<AssessmentResult> {
     const params: AzurePronunciationParams = {
       ReferenceText: referenceText,
-      GradingSystem: 'HundredMark',
-      Granularity: 'Word',
-      Dimension: 'Comprehensive',
-      EnableProsodyAssessment: 'True',
+      GradingSystem: "HundredMark",
+      Granularity: "Word",
+      Dimension: "Comprehensive",
+      EnableProsodyAssessment: "True",
     };
 
-    const pronunciationAssessmentParamsBase64 = Buffer.from(
-      JSON.stringify(params),
-    ).toString('base64');
+    const pronunciationAssessmentParamsBase64 = Buffer.from(JSON.stringify(params)).toString(
+      "base64",
+    );
 
     const region = this.environment.azureSpeechRegion;
     const url = `https://${region}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=en-US&format=detailed`;
 
-    console.log('[AzureSpeechClient] Calling Azure Speech API...');
-    console.log('[AzureSpeechClient] URL:', url);
+    console.log("[AzureSpeechClient] Calling Azure Speech API...");
+    console.log("[AzureSpeechClient] URL:", url);
 
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Ocp-Apim-Subscription-Key': this.environment.azureSpeechKey,
-        'Content-Type': 'audio/wav; codecs=audio/pcm; samplerate=16000',
-        Accept: 'application/json',
-        'Pronunciation-Assessment': pronunciationAssessmentParamsBase64,
+        "Ocp-Apim-Subscription-Key": this.environment.azureSpeechKey,
+        "Content-Type": "audio/wav; codecs=audio/pcm; samplerate=16000",
+        Accept: "application/json",
+        "Pronunciation-Assessment": pronunciationAssessmentParamsBase64,
       },
       body: audioData,
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('[AzureSpeechClient] Azure API error:', response.status, errorText);
+      console.error("[AzureSpeechClient] Azure API error:", response.status, errorText);
       throw new Error(`Azure Speech API error: ${response.status} - ${errorText}`);
     }
 
     const rawResult: unknown = await response.json();
     const azureResult = rawResult as AzureSpeechApiResponse;
-    console.log('[AzureSpeechClient] Azure API response received');
+    console.log("[AzureSpeechClient] Azure API response received");
 
     return this.parseAzureResponse(azureResult);
   }
@@ -98,13 +95,13 @@ export class AzureSpeechClient implements IAzureSpeechClient {
    * Azure API レスポンスをパース
    */
   private parseAzureResponse(azureResult: AzureSpeechApiResponse): AssessmentResult {
-    if (azureResult.RecognitionStatus !== 'Success') {
+    if (azureResult.RecognitionStatus !== "Success") {
       throw new Error(`Recognition failed: ${azureResult.RecognitionStatus}`);
     }
 
     const nBest = azureResult.NBest?.[0];
     if (!nBest) {
-      throw new Error('No recognition results available');
+      throw new Error("No recognition results available");
     }
 
     return {
@@ -129,11 +126,11 @@ export class AzureSpeechClient implements IAzureSpeechClient {
    */
   private normalizeErrorType(
     errorType?: string,
-  ): 'None' | 'Mispronunciation' | 'Omission' | 'Insertion' {
-    if (!errorType || errorType === 'None') return 'None';
-    if (errorType === 'Mispronunciation') return 'Mispronunciation';
-    if (errorType === 'Omission') return 'Omission';
-    if (errorType === 'Insertion') return 'Insertion';
-    return 'None';
+  ): "None" | "Mispronunciation" | "Omission" | "Insertion" {
+    if (!errorType || errorType === "None") return "None";
+    if (errorType === "Mispronunciation") return "Mispronunciation";
+    if (errorType === "Omission") return "Omission";
+    if (errorType === "Insertion") return "Insertion";
+    return "None";
   }
 }

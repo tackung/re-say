@@ -1,0 +1,9 @@
+node_modules
+dist
+build
+uploads
+.agent
+docs
+package-lock.json
+apps/frontend/package-lock.json
+apps/backend/package-lock.json

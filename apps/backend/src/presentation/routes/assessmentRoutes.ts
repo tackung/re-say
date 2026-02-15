@@ -1,9 +1,9 @@
 /**
  * Routes: 発音評価関連
  */
-import { Router } from 'express';
-import multer from 'multer';
-import { AssessmentController } from '../controllers/AssessmentController.js';
+import { Router } from "express";
+import multer from "multer";
+import { AssessmentController } from "../controllers/AssessmentController.js";
 
 export const createAssessmentRoutes = (
   controller: AssessmentController,
@@ -17,8 +17,8 @@ export const createAssessmentRoutes = (
     },
   });
 
-  router.get('/health', controller.healthCheck);
-  router.post('/assess', upload.single('audio'), controller.assess);
+  router.get("/health", controller.healthCheck);
+  router.post("/assess", upload.single("audio"), controller.assess);
 
   return router;
 };

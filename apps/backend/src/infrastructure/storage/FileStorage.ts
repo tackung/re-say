@@ -1,8 +1,8 @@
 /**
  * ファイルストレージ管理
  */
-import fs from 'fs/promises';
-import path from 'path';
+import fs from "fs/promises";
+import path from "path";
 
 export interface IFileStorage {
   saveFile(filePath: string, data: Buffer): Promise<void>;
@@ -34,7 +34,7 @@ export class FileStorage implements IFileStorage {
       await fs.unlink(filePath);
     } catch (error) {
       // ファイルが存在しない場合は無視
-      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
         throw error;
       }
     }

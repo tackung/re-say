@@ -10,4 +10,4 @@ export type {
   ApiResponse,
   AssessmentApiResponse,
   HealthCheckResponse,
-} from '../../../../../packages/shared/types/assessment.js';
+} from "../../../../../packages/shared/types/assessment.js";

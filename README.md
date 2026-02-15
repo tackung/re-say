@@ -80,9 +80,9 @@ npm run dev
 ```
 
 This will start:
+
 - Frontend dev server on http://localhost:5173
 - Backend server on http://localhost:3000
-
 
 ## Usage
 

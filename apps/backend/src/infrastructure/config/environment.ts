@@ -1,18 +1,18 @@
-import dotenv from 'dotenv';
-import path from 'path';
-import { existsSync } from 'fs';
+import dotenv from "dotenv";
+import path from "path";
+import { existsSync } from "fs";
 
 export interface EnvironmentConfig {
   azureSpeechKey: string;
   azureSpeechRegion: string;
   port: number;
-  nodeEnv: 'development' | 'production' | 'test';
+  nodeEnv: "development" | "production" | "test";
   uploadDir: string;
 }
 
 const ENV_FILE_CANDIDATES = [
-  path.resolve(process.cwd(), '.env'),
-  path.resolve(process.cwd(), '../../.env'),
+  path.resolve(process.cwd(), ".env"),
+  path.resolve(process.cwd(), "../../.env"),
 ];
 
 for (const envFilePath of ENV_FILE_CANDIDATES) {
@@ -22,11 +22,11 @@ for (const envFilePath of ENV_FILE_CANDIDATES) {
   }
 }
 
-const asNodeEnv = (value: string | undefined): 'development' | 'production' | 'test' => {
-  if (value === 'development' || value === 'production' || value === 'test') {
+const asNodeEnv = (value: string | undefined): "development" | "production" | "test" => {
+  if (value === "development" || value === "production" || value === "test") {
     return value;
   }
-  return 'development';
+  return "development";
 };
 
 const asPort = (value: string | undefined): number => {
@@ -49,15 +49,15 @@ export class Environment {
   private constructor() {
     const azureSpeechKey = process.env.AZURE_SPEECH_KEY;
     if (!azureSpeechKey || azureSpeechKey.trim().length === 0) {
-      throw new Error('AZURE_SPEECH_KEY is not set in environment variables');
+      throw new Error("AZURE_SPEECH_KEY is not set in environment variables");
     }
 
     this.config = {
       azureSpeechKey,
-      azureSpeechRegion: process.env.AZURE_SPEECH_REGION || 'japaneast',
+      azureSpeechRegion: process.env.AZURE_SPEECH_REGION || "japaneast",
       port: asPort(process.env.PORT),
       nodeEnv: asNodeEnv(process.env.NODE_ENV),
-      uploadDir: path.resolve(process.cwd(), '../../uploads'),
+      uploadDir: path.resolve(process.cwd(), "../../uploads"),
     };
   }
 
@@ -80,7 +80,7 @@ export class Environment {
     return this.config.port;
   }
 
-  public get nodeEnv(): 'development' | 'production' | 'test' {
+  public get nodeEnv(): "development" | "production" | "test" {
     return this.config.nodeEnv;
   }
 

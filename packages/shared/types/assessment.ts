@@ -1,13 +1,13 @@
-export type AssessmentStatus = 'success' | 'error';
+export type AssessmentStatus = "success" | "error";
 
 export type WordErrorType =
-  | 'None'
-  | 'Mispronunciation'
-  | 'Omission'
-  | 'Insertion'
-  | 'UnexpectedBreak'
-  | 'MissingBreak'
-  | 'Monotone';
+  | "None"
+  | "Mispronunciation"
+  | "Omission"
+  | "Insertion"
+  | "UnexpectedBreak"
+  | "MissingBreak"
+  | "Monotone";
 
 export interface AssessmentRequest {
   referenceText: string;
@@ -34,12 +34,12 @@ export interface AssessmentResult {
 }
 
 export interface SuccessResponse<T> {
-  status: 'success';
+  status: "success";
   result: T;
 }
 
 export interface ErrorResponse {
-  status: 'error';
+  status: "error";
   error: string;
 }
 
@@ -48,6 +48,6 @@ export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 export type AssessmentApiResponse = ApiResponse<AssessmentResult>;
 
 export interface HealthCheckResponse {
-  status: 'ok';
+  status: "ok";
   timestamp: string;
 }

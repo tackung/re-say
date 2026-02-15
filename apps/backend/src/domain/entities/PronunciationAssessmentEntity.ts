@@ -1,7 +1,7 @@
 /**
  * ドメインエンティティ: 発音評価結果
  */
-import { AssessmentResult, AssessmentScores, WordAssessment } from '../types/assessment.js';
+import { AssessmentResult, AssessmentScores, WordAssessment } from "../types/assessment.js";
 
 export class PronunciationAssessmentEntity {
   constructor(
@@ -28,7 +28,7 @@ export class PronunciationAssessmentEntity {
    * エラーがある単語のリストを取得
    */
   getErrorWords(): WordAssessment[] {
-    return this.words.filter(word => word.errorType !== 'None');
+    return this.words.filter((word) => word.errorType !== "None");
   }
 
   /**
@@ -38,7 +38,7 @@ export class PronunciationAssessmentEntity {
     return {
       recognizedText: this.recognizedText,
       scores: { ...this.scores },
-      words: this.words.map(w => ({ ...w })),
+      words: this.words.map((w) => ({ ...w })),
     };
   }
 
@@ -46,10 +46,6 @@ export class PronunciationAssessmentEntity {
    * プレーンオブジェクトからエンティティを作成
    */
   static fromPlainObject(data: AssessmentResult): PronunciationAssessmentEntity {
-    return new PronunciationAssessmentEntity(
-      data.recognizedText,
-      data.scores,
-      data.words,
-    );
+    return new PronunciationAssessmentEntity(data.recognizedText, data.scores, data.words);
   }
 }
