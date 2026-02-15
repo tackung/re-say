@@ -55,6 +55,7 @@ type SentenceToken = {
 
 const normalizeWord = (value: string): string => value.toLowerCase().replace(/[^a-z0-9']/g, "");
 const hasMultibyteCharacters = (value: string): boolean => /[^\x00-\x7F]/.test(value);
+const FREE_TEXT_MAX_LENGTH = 100;
 
 const buildSentenceTokens = (referenceText: string, words: WordAssessment[]): SentenceToken[] => {
   const tokens = referenceText.split(/\s+/).filter(Boolean);
@@ -120,10 +121,14 @@ const PronunciationAssessment = () => {
       ? availablePhrases[Math.min(selectedPhraseIndex, availablePhrases.length - 1)]
       : undefined;
   const referenceText = isFreeMode ? freeModeSentenceInput.trim() : (selectedPhrase?.en ?? "");
+  const hasExceededFreeTextLength =
+    isFreeMode && freeModeSentenceInput.length > FREE_TEXT_MAX_LENGTH;
   const freeModeInputError =
     isFreeMode && hasMultibyteCharacters(freeModeSentenceInput)
       ? "⚠ 英文のみに対応しています"
-      : null;
+      : hasExceededFreeTextLength
+        ? `⚠ ${FREE_TEXT_MAX_LENGTH}文字以内で入力してください`
+        : null;
   const sentenceTokens = useMemo(
     () => buildSentenceTokens(referenceText, result?.words ?? []),
     [referenceText, result?.words],
@@ -407,6 +412,9 @@ const PronunciationAssessment = () => {
                   placeholder="Type an English sentence to assess pronunciation."
                   className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
                 />
+                <p className="text-[11px] text-slate-500">
+                  {freeModeSentenceInput.length}/{FREE_TEXT_MAX_LENGTH}
+                </p>
                 {freeModeInputError && (
                   <p className="text-xs font-medium text-rose-600">{freeModeInputError}</p>
                 )}
@@ -501,7 +509,7 @@ const PronunciationAssessment = () => {
                 ? "Free Mode: 英文を入力して発音評価できます。"
                 : (selectedPhrase?.ja ?? "日本語訳はありません。")}
             </div>
-            <div className="mt-5 flex flex-wrap justify-center gap-9">
+            <div className="mt-5 flex flex-wrap justify-center gap-7">
               {!isRecording ? (
                 <Button
                   onClick={startRecording}
