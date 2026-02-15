@@ -195,8 +195,8 @@ export const PracticeContextCard = ({
                   </span>
                 ))
               ) : (
-                <span className="text-xl font-bold leading-relaxed tracking-wide text-slate-900 sm:text-2xl">
-                  No sentence available.
+                <span className="text-xl font-semibold leading-relaxed tracking-wide text-slate-300 sm:text-1xl">
+                  ☝️上部の入力欄に自由に英文を入力してください
                 </span>
               )}
             </div>
@@ -204,8 +204,8 @@ export const PracticeContextCard = ({
 
           <div className="mt-3 rounded-lg border border-slate-200/80 bg-white/80 px-4 py-3 text-sm text-slate-600">
             {isFreeMode
-              ? "Free Mode: 英文を入力して発音評価できます。"
-              : (selectedPhraseJa ?? "日本語訳はありません。")}
+              ? "Free Mode: 英文を入力して発音評価できます"
+              : (selectedPhraseJa ?? "日本語訳はありません")}
           </div>
 
           <div className="mt-5 flex flex-wrap justify-center gap-7">
