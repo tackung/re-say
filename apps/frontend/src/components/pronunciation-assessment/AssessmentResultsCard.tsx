@@ -1,9 +1,12 @@
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, LoaderCircle, Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { AssessmentResult } from "../../../../../packages/shared/types/assessment";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getScoreColor } from "../../lib/assessment/labels";
 import { cn } from "../../lib/utils";
+import { synthesizeExampleSpeech } from "../../services/assessmentApi";
 import { SCORE_LABELS, WORD_PHONEME_HELP_TEXT } from "./constants";
 import { getPhonemeBadgeClass, getScoreBarClass } from "./utils";
 
@@ -12,6 +15,85 @@ type AssessmentResultsCardProps = {
 };
 
 export const AssessmentResultsCard = ({ result }: AssessmentResultsCardProps) => {
+  const [isSynthesizingWordAudio, setIsSynthesizingWordAudio] = useState(false);
+  const [playingWordKey, setPlayingWordKey] = useState<string | null>(null);
+  const [wordAudioError, setWordAudioError] = useState<string | null>(null);
+  const wordAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const stopWordAudio = useCallback((): void => {
+    const audio = wordAudioRef.current;
+    if (!audio) {
+      return;
+    }
+
+    audio.pause();
+    audio.onended = null;
+    audio.onerror = null;
+
+    const sourceUrl = audio.src;
+    wordAudioRef.current = null;
+
+    if (sourceUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(sourceUrl);
+    }
+
+    setPlayingWordKey(null);
+  }, []);
+
+  const playWordAudio = useCallback(
+    async (wordText: string, wordKey: string): Promise<void> => {
+      if (playingWordKey === wordKey) {
+        stopWordAudio();
+        return;
+      }
+
+      setWordAudioError(null);
+      setIsSynthesizingWordAudio(true);
+
+      try {
+        const audioBlob = await synthesizeExampleSpeech(wordText);
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        stopWordAudio();
+
+        const audio = new Audio(audioUrl);
+        wordAudioRef.current = audio;
+
+        audio.onended = () => {
+          if (audioUrl.startsWith("blob:")) {
+            URL.revokeObjectURL(audioUrl);
+          }
+          if (wordAudioRef.current === audio) {
+            wordAudioRef.current = null;
+          }
+          setPlayingWordKey(null);
+        };
+
+        audio.onerror = () => {
+          if (audioUrl.startsWith("blob:")) {
+            URL.revokeObjectURL(audioUrl);
+          }
+          if (wordAudioRef.current === audio) {
+            wordAudioRef.current = null;
+          }
+          setPlayingWordKey(null);
+          setWordAudioError("Failed to play word audio.");
+        };
+
+        await audio.play();
+        setPlayingWordKey(wordKey);
+      } catch (caught) {
+        stopWordAudio();
+        setWordAudioError(caught instanceof Error ? caught.message : "Failed to synthesize word");
+      } finally {
+        setIsSynthesizingWordAudio(false);
+      }
+    },
+    [playingWordKey, stopWordAudio],
+  );
+
+  useEffect(() => () => stopWordAudio(), [stopWordAudio]);
+
   return (
     <Card className="border-slate-900/10 bg-white/90 shadow-2xl dark:border-white/10 dark:bg-slate-950/70">
       <CardHeader>
@@ -81,36 +163,61 @@ export const AssessmentResultsCard = ({ result }: AssessmentResultsCardProps) =>
               </div>
             </div>
             <div className="space-y-2">
-              {result.words.map((word, index) => (
-                <div
-                  key={`${word.word}-${index}`}
-                  className="rounded-xl border border-slate-200 bg-white p-3"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-sm font-semibold text-slate-900">{word.word}</span>
-                    <span className={`text-sm font-semibold ${getScoreColor(word.accuracyScore)}`}>
-                      {word.accuracyScore.toFixed(1)}
-                    </span>
-                  </div>
-                  {word.phonemes.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {word.phonemes.map((phoneme, phonemeIndex) => (
-                        <span
-                          key={`${phoneme.phoneme}-${phonemeIndex}`}
-                          className={cn(
-                            "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium",
-                            getPhonemeBadgeClass(phoneme.accuracyScore),
-                          )}
+              {result.words.map((word, index) => {
+                const wordKey = `${word.word}-${index}`;
+                const isCurrentWordPlaying = playingWordKey === wordKey;
+                return (
+                  <div key={wordKey} className="rounded-xl border border-slate-200 bg-white p-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-slate-900">{word.word}</span>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => playWordAudio(word.word, wordKey)}
+                          disabled={isSynthesizingWordAudio}
+                          className="h-8 border-slate-300/80 bg-white/90 px-3 text-xs"
                         >
-                          <span>{phoneme.phoneme}</span>
-                          <span>{phoneme.accuracyScore.toFixed(0)}</span>
-                        </span>
-                      ))}
+                          {isSynthesizingWordAudio && !isCurrentWordPlaying ? (
+                            <LoaderCircle className="size-3.5 animate-spin" />
+                          ) : isCurrentWordPlaying ? (
+                            <VolumeX className="size-3.5" />
+                          ) : (
+                            <Volume2 className="size-3.5" />
+                          )}
+                          {isCurrentWordPlaying ? "Stop" : "Listen"}
+                        </Button>
+                      </div>
+                      <span
+                        className={`text-sm font-semibold ${getScoreColor(word.accuracyScore)}`}
+                      >
+                        {word.accuracyScore.toFixed(1)}
+                      </span>
                     </div>
-                  )}
-                </div>
-              ))}
+                    {word.phonemes.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {word.phonemes.map((phoneme, phonemeIndex) => (
+                          <span
+                            key={`${phoneme.phoneme}-${phonemeIndex}`}
+                            className={cn(
+                              "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium",
+                              getPhonemeBadgeClass(phoneme.accuracyScore),
+                            )}
+                          >
+                            <span>{phoneme.phoneme}</span>
+                            <span>{phoneme.accuracyScore.toFixed(0)}</span>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
+            {wordAudioError && (
+              <p className="text-xs font-medium text-rose-600">{wordAudioError}</p>
+            )}
           </div>
         )}
       </CardContent>
