@@ -19,6 +19,7 @@ export const createAssessmentRoutes = (
 
   router.get("/health", controller.healthCheck);
   router.post("/assess", upload.single("audio"), controller.assess);
+  router.post("/tts", controller.synthesize);
 
   return router;
 };

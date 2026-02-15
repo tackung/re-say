@@ -25,7 +25,11 @@ await fileStorage.ensureDirectory(environment.uploadDir);
 
 const azureSpeechClient = new AzureSpeechClient();
 const assessmentService = new PronunciationAssessmentService(azureSpeechClient, fileStorage);
-const assessmentController = new AssessmentController(assessmentService, fileStorage);
+const assessmentController = new AssessmentController(
+  assessmentService,
+  fileStorage,
+  azureSpeechClient,
+);
 
 app.use("/api", createAssessmentRoutes(assessmentController, environment.uploadDir));
 app.use(errorHandler);

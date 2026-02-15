@@ -36,10 +36,13 @@ export interface AzureSpeechApiResponse {
 
 export interface IAzureSpeechClient {
   assessPronunciation(audioData: Buffer, referenceText: string): Promise<AssessmentResult>;
+  synthesizeTextToSpeech(text: string): Promise<Buffer>;
 }
 
 export class AzureSpeechClient implements IAzureSpeechClient {
   private readonly environment: Environment;
+  private static readonly TTS_PRIMARY_VOICE = "en-US-GuyNeural";
+  private static readonly TTS_FALLBACK_VOICE = "en-US-BrandonNeural";
 
   constructor() {
     this.environment = Environment.getInstance();
@@ -89,6 +92,76 @@ export class AzureSpeechClient implements IAzureSpeechClient {
     console.log("[AzureSpeechClient] Azure API response received");
 
     return this.parseAzureResponse(azureResult);
+  }
+
+  /**
+   * テキストを音声に変換
+   */
+  async synthesizeTextToSpeech(text: string): Promise<Buffer> {
+    const normalizedText = text.trim();
+    if (!normalizedText) {
+      throw new Error("Text is required for speech synthesis");
+    }
+
+    const voices = [AzureSpeechClient.TTS_PRIMARY_VOICE, AzureSpeechClient.TTS_FALLBACK_VOICE];
+    let lastError = "Unknown speech synthesis error";
+
+    for (const voiceName of voices) {
+      const result = await this.trySynthesizeWithVoice(normalizedText, voiceName);
+      if (result.ok) {
+        return result.audioData;
+      }
+      lastError = result.errorDetail;
+    }
+
+    throw new Error(lastError);
+  }
+
+  private async trySynthesizeWithVoice(
+    text: string,
+    voiceName: string,
+  ): Promise<{ ok: true; audioData: Buffer } | { ok: false; errorDetail: string }> {
+    const ssml = this.buildSsml(text, voiceName);
+    const region = this.environment.azureSpeechRegion;
+    const url = `https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`;
+
+    console.log("[AzureSpeechClient] Calling Azure TTS API...");
+    console.log("[AzureSpeechClient] TTS voice:", voiceName);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Ocp-Apim-Subscription-Key": this.environment.azureSpeechKey,
+        "Content-Type": "application/ssml+xml",
+        "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3",
+        "User-Agent": "re-say",
+      },
+      body: ssml,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      const errorDetail = `Azure TTS API error (${voiceName}): ${response.status} - ${errorText}`;
+      console.error("[AzureSpeechClient]", errorDetail);
+      return { ok: false, errorDetail };
+    }
+
+    const audioBuffer = Buffer.from(await response.arrayBuffer());
+    return { ok: true, audioData: audioBuffer };
+  }
+
+  private buildSsml(text: string, voiceName: string): string {
+    const escapedText = this.escapeForXml(text);
+    return `<speak version="1.0" xml:lang="en-US"><voice name="${voiceName}">${escapedText}</voice></speak>`;
+  }
+
+  private escapeForXml(text: string): string {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
   }
 
   /**

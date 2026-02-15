@@ -5,11 +5,13 @@ import { Request, Response, NextFunction } from "express";
 import { IPronunciationAssessmentService } from "../../application/services/PronunciationAssessmentService.js";
 import { IFileStorage } from "../../infrastructure/storage/FileStorage.js";
 import { AssessmentApiResponse, HealthCheckResponse } from "../../domain/types/assessment.js";
+import { IAzureSpeechClient } from "../../infrastructure/azureSpeech/AzureSpeechClient.js";
 
 export class AssessmentController {
   constructor(
     private readonly assessmentService: IPronunciationAssessmentService,
     private readonly fileStorage: IFileStorage,
+    private readonly azureSpeechClient: IAzureSpeechClient,
   ) {}
 
   healthCheck = (_req: Request, res: Response): void => {
@@ -54,6 +56,37 @@ export class AssessmentController {
       if (req.file) {
         await this.fileStorage.deleteFile(req.file.path).catch(console.error);
       }
+      next(error);
+    }
+  };
+
+  synthesize = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const textRaw = req.body?.text;
+      const text = typeof textRaw === "string" ? textRaw.trim() : "";
+
+      if (!text) {
+        res.status(400).json({
+          status: "error",
+          error: "Text is required",
+        });
+        return;
+      }
+
+      if (text.length > 500) {
+        res.status(400).json({
+          status: "error",
+          error: "Text must be 500 characters or less",
+        });
+        return;
+      }
+
+      const audioData = await this.azureSpeechClient.synthesizeTextToSpeech(text);
+
+      res.setHeader("Content-Type", "audio/mpeg");
+      res.setHeader("Content-Length", audioData.length.toString());
+      res.send(audioData);
+    } catch (error) {
       next(error);
     }
   };

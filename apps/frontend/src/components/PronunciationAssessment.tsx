@@ -2,12 +2,15 @@ import {
   ChevronLeft,
   ChevronRight,
   Dice5,
+  LoaderCircle,
   Mic,
   OctagonMinus,
   Sparkles,
   TriangleAlert,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AssessmentApiResponse,
   AssessmentResult,
@@ -16,7 +19,7 @@ import {
 import { getScoreColor } from "../lib/assessment/labels";
 import { convertToWav } from "../lib/audio/wavConverter";
 import { cn } from "../lib/utils";
-import { assessPronunciation } from "../services/assessmentApi";
+import { assessPronunciation, synthesizeExampleSpeech } from "../services/assessmentApi";
 import contents from "../data/contents.json";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -102,8 +105,11 @@ const PronunciationAssessment = () => {
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [freeModeSentenceInput, setFreeModeSentenceInput] = useState("");
+  const [isSynthesizingSpeech, setIsSynthesizingSpeech] = useState(false);
+  const [isPlayingExampleSpeech, setIsPlayingExampleSpeech] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const exampleAudioRef = useRef<HTMLAudioElement | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const selectedPackage =
     selectedPackageIndex >= 0 ? practicePackages[selectedPackageIndex] : undefined;
@@ -122,6 +128,26 @@ const PronunciationAssessment = () => {
     () => buildSentenceTokens(referenceText, result?.words ?? []),
     [referenceText, result?.words],
   );
+
+  const stopExampleSpeech = useCallback((): void => {
+    const audio = exampleAudioRef.current;
+    if (!audio) {
+      return;
+    }
+
+    audio.pause();
+    audio.onended = null;
+    audio.onerror = null;
+
+    const sourceUrl = audio.src;
+    exampleAudioRef.current = null;
+
+    if (sourceUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(sourceUrl);
+    }
+
+    setIsPlayingExampleSpeech(false);
+  }, []);
 
   const movePhraseSelection = (direction: "prev" | "next"): void => {
     if (availablePhrases.length === 0) {
@@ -176,6 +202,7 @@ const PronunciationAssessment = () => {
 
   const startRecording = async (): Promise<void> => {
     try {
+      stopExampleSpeech();
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
@@ -208,6 +235,65 @@ const PronunciationAssessment = () => {
       setResult(null);
     } catch {
       setError("Failed to access microphone. Please check your permissions.");
+    }
+  };
+
+  const playExampleSpeech = async (): Promise<void> => {
+    if (isPlayingExampleSpeech) {
+      stopExampleSpeech();
+      return;
+    }
+
+    if (isFreeMode && freeModeInputError) {
+      setError(freeModeInputError);
+      return;
+    }
+
+    if (!referenceText) {
+      setError("Practice sentence is not selected.");
+      return;
+    }
+
+    setError(null);
+    setIsSynthesizingSpeech(true);
+
+    try {
+      const audioBlob = await synthesizeExampleSpeech(referenceText);
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      stopExampleSpeech();
+
+      const audio = new Audio(audioUrl);
+      exampleAudioRef.current = audio;
+
+      audio.onended = () => {
+        if (audioUrl.startsWith("blob:")) {
+          URL.revokeObjectURL(audioUrl);
+        }
+        if (exampleAudioRef.current === audio) {
+          exampleAudioRef.current = null;
+        }
+        setIsPlayingExampleSpeech(false);
+      };
+
+      audio.onerror = () => {
+        if (audioUrl.startsWith("blob:")) {
+          URL.revokeObjectURL(audioUrl);
+        }
+        if (exampleAudioRef.current === audio) {
+          exampleAudioRef.current = null;
+        }
+        setIsPlayingExampleSpeech(false);
+        setError("Failed to play example speech.");
+      };
+
+      await audio.play();
+      setIsPlayingExampleSpeech(true);
+    } catch (caught) {
+      stopExampleSpeech();
+      setError(caught instanceof Error ? caught.message : "Failed to synthesize speech");
+    } finally {
+      setIsSynthesizingSpeech(false);
     }
   };
 
@@ -251,6 +337,12 @@ const PronunciationAssessment = () => {
     setResult(null);
     setError(null);
   }, [freeModeSentenceInput, isFreeMode]);
+
+  useEffect(() => {
+    stopExampleSpeech();
+  }, [referenceText, stopExampleSpeech]);
+
+  useEffect(() => () => stopExampleSpeech(), [stopExampleSpeech]);
 
   const getScoreBarClass = (score: number): string => {
     if (score >= 80) {
@@ -377,7 +469,7 @@ const PronunciationAssessment = () => {
               )}
             </div>
             <div className="mt-4 rounded-xl border border-orange-200 bg-white px-4 py-4 shadow-sm">
-              <div className="flex flex-wrap gap-x-2 gap-y-2">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
                 {sentenceTokens.length > 0 ? (
                   sentenceTokens.map((item, index) => (
                     <span
@@ -409,11 +501,17 @@ const PronunciationAssessment = () => {
                 ? "Free Mode: 英文を入力して発音評価できます。"
                 : (selectedPhrase?.ja ?? "日本語訳はありません。")}
             </div>
-            <div className="mt-5 flex justify-center">
+            <div className="mt-5 flex flex-wrap justify-center gap-9">
               {!isRecording ? (
                 <Button
                   onClick={startRecording}
-                  disabled={isLoading || !referenceText || Boolean(freeModeInputError)}
+                  disabled={
+                    isLoading ||
+                    isSynthesizingSpeech ||
+                    isPlayingExampleSpeech ||
+                    !referenceText ||
+                    Boolean(freeModeInputError)
+                  }
                   size="lg"
                   className="h-12 rounded-full bg-emerald-600 px-8 text-base text-white shadow-lg shadow-emerald-500/35 hover:bg-emerald-500"
                 >
@@ -430,6 +528,26 @@ const PronunciationAssessment = () => {
                   Stop
                 </Button>
               )}
+              <Button
+                onClick={playExampleSpeech}
+                disabled={isLoading || isRecording || !referenceText || Boolean(freeModeInputError)}
+                size="lg"
+                className={cn(
+                  "h-12 rounded-full px-8 text-base text-white shadow-lg",
+                  isPlayingExampleSpeech
+                    ? "bg-slate-700 shadow-slate-500/35 hover:bg-slate-600"
+                    : "bg-sky-600 shadow-sky-500/35 hover:bg-sky-500",
+                )}
+              >
+                {isSynthesizingSpeech ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : isPlayingExampleSpeech ? (
+                  <VolumeX className="size-4" />
+                ) : (
+                  <Volume2 className="size-4" />
+                )}
+                {isPlayingExampleSpeech ? "Stop" : "Listen"}
+              </Button>
             </div>
           </div>
         </CardContent>
