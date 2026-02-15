@@ -9,21 +9,23 @@ function App() {
         <div className="absolute bottom-[-8%] left-[42%] h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
       </div>
 
-      <section className="relative mx-auto w-full max-w-6xl space-y-8">
-        <header className="space-y-4 text-center">
-          <div className="flex items-center justify-center gap-3">
-            <img
-              src="/app_icon.png"
-              alt="re-say icon"
-              className="h-12 w-12 rounded-2xl shadow-md ring-1 ring-black/10"
-            />
-            <span className="text-2xl font-bold tracking-wide text-slate-900 dark:text-slate-100">
-              re-say
-            </span>
+      <section className="relative mx-auto w-full max-w-6xl space-y-4">
+        <header className="space-y-4 text-left">
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex items-center justify-start gap-5">
+              <img
+                src="/app_icon.png"
+                alt="re-say icon"
+                className="h-16 w-16 rounded-2xl shadow-md ring-1 ring-black/10"
+              />
+              <span className="text-balance text-[clamp(1.3rem,3.2vw,2.25rem)] font-black leading-tight tracking-tight text-slate-900 dark:text-white">
+                re-say!
+              </span>
+            </div>
+            <p className="text-[clamp(0.8rem,1.8vw,1.1rem)] font-light text-slate-600 dark:text-slate-300">
+              英語発音練習アプリ
+            </p>
           </div>
-          <h1 className="text-balance text-4xl font-black tracking-tight text-slate-900 sm:text-5xl lg:text-6xl dark:text-white">
-            Speak Better With Curated Contexts
-          </h1>
         </header>
         <PronunciationAssessment />
       </section>
