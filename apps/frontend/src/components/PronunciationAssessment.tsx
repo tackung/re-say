@@ -30,6 +30,7 @@ type PracticePhrase = {
 
 type PracticePackage = {
   topic: string;
+  mode: "curated" | "free-text";
   phrases: PracticePhrase[];
 };
 
@@ -38,7 +39,10 @@ type PracticeContents = {
 };
 
 const practiceContents = contents as PracticeContents;
-const practicePackages = practiceContents.packages.filter((entry) => entry.phrases.length > 0);
+const isFreeTextPackage = (entry: PracticePackage): boolean => entry.mode === "free-text";
+const practicePackages = practiceContents.packages.filter(
+  (entry) => isFreeTextPackage(entry) || entry.phrases.length > 0,
+);
 const initialPackageIndex = practicePackages.length > 0 ? 0 : -1;
 
 type SentenceToken = {
@@ -47,6 +51,7 @@ type SentenceToken = {
 };
 
 const normalizeWord = (value: string): string => value.toLowerCase().replace(/[^a-z0-9']/g, "");
+const hasMultibyteCharacters = (value: string): boolean => /[^\x00-\x7F]/.test(value);
 
 const buildSentenceTokens = (referenceText: string, words: WordAssessment[]): SentenceToken[] => {
   const tokens = referenceText.split(/\s+/).filter(Boolean);
@@ -96,17 +101,23 @@ const PronunciationAssessment = () => {
   const [loadingProgress, setLoadingProgress] = useState(18);
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [freeModeSentenceInput, setFreeModeSentenceInput] = useState("");
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const selectedPackage =
     selectedPackageIndex >= 0 ? practicePackages[selectedPackageIndex] : undefined;
+  const isFreeMode = selectedPackage ? isFreeTextPackage(selectedPackage) : false;
   const availablePhrases = selectedPackage?.phrases ?? [];
   const selectedPhrase =
     availablePhrases.length > 0
       ? availablePhrases[Math.min(selectedPhraseIndex, availablePhrases.length - 1)]
       : undefined;
-  const referenceText = selectedPhrase?.en ?? "";
+  const referenceText = isFreeMode ? freeModeSentenceInput.trim() : (selectedPhrase?.en ?? "");
+  const freeModeInputError =
+    isFreeMode && hasMultibyteCharacters(freeModeSentenceInput)
+      ? "⚠ 英文のみに対応しています"
+      : null;
   const sentenceTokens = useMemo(
     () => buildSentenceTokens(referenceText, result?.words ?? []),
     [referenceText, result?.words],
@@ -134,6 +145,11 @@ const PronunciationAssessment = () => {
   };
 
   const processAudio = async (audioBlob: Blob): Promise<void> => {
+    if (isFreeMode && freeModeInputError) {
+      setError(freeModeInputError);
+      return;
+    }
+
     if (!referenceText) {
       setError("Practice sentence is not selected.");
       return;
@@ -228,6 +244,14 @@ const PronunciationAssessment = () => {
     setError(null);
   }, [selectedPhraseIndex]);
 
+  useEffect(() => {
+    if (!isFreeMode) {
+      return;
+    }
+    setResult(null);
+    setError(null);
+  }, [freeModeSentenceInput, isFreeMode]);
+
   const getScoreBarClass = (score: number): string => {
     if (score >= 80) {
       return "[&>div]:bg-emerald-600";
@@ -279,22 +303,40 @@ const PronunciationAssessment = () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <label className="space-y-1.5">
-              <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
-                Sentence
-              </span>
-              <select
-                value={selectedPhraseIndex}
-                onChange={(event) => setSelectedPhraseIndex(Number(event.target.value))}
-                className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
-              >
-                {availablePhrases.map((phrase, index) => (
-                  <option key={`${index}-${phrase.en}`} value={index}>
-                    {index + 1}. {phrase.en}
-                  </option>
-                ))}
-              </select>
-            </label>
+            {isFreeMode ? (
+              <label className="space-y-1.5 md:col-span-2">
+                <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+                  Sentence Input
+                </span>
+                <input
+                  type="text"
+                  value={freeModeSentenceInput}
+                  onChange={(event) => setFreeModeSentenceInput(event.target.value)}
+                  placeholder="Type an English sentence to assess pronunciation."
+                  className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                />
+                {freeModeInputError && (
+                  <p className="text-xs font-medium text-rose-600">{freeModeInputError}</p>
+                )}
+              </label>
+            ) : (
+              <label className="space-y-1.5">
+                <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+                  Sentence
+                </span>
+                <select
+                  value={selectedPhraseIndex}
+                  onChange={(event) => setSelectedPhraseIndex(Number(event.target.value))}
+                  className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                >
+                  {availablePhrases.map((phrase, index) => (
+                    <option key={`${index}-${phrase.en}`} value={index}>
+                      {index + 1}. {phrase.en}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
           </div>
 
           <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 p-5 sm:p-6">
@@ -302,35 +344,37 @@ const PronunciationAssessment = () => {
               <span className="rounded-full bg-orange-500 px-3 py-1 text-[11px] font-bold tracking-[0.18em] text-white uppercase">
                 Read This
               </span>
-              <div className="flex items-center gap-1.5">
-                <Button
-                  onClick={() => movePhraseSelection("prev")}
-                  variant="outline"
-                  size="sm"
-                  className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
-                >
-                  <ChevronLeft className="size-3.5" />
-                  Prev.
-                </Button>
-                <Button
-                  onClick={chooseRandomPhrase}
-                  variant="outline"
-                  size="sm"
-                  className="h-8 border-slate-300/80 bg-white/90 px-3 text-xs"
-                >
-                  <Dice5 className="size-3.5" />
-                  Random
-                </Button>
-                <Button
-                  onClick={() => movePhraseSelection("next")}
-                  variant="outline"
-                  size="sm"
-                  className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
-                >
-                  Next
-                  <ChevronRight className="size-3.5" />
-                </Button>
-              </div>
+              {!isFreeMode && (
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    onClick={() => movePhraseSelection("prev")}
+                    variant="outline"
+                    size="sm"
+                    className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
+                  >
+                    <ChevronLeft className="size-3.5" />
+                    Prev.
+                  </Button>
+                  <Button
+                    onClick={chooseRandomPhrase}
+                    variant="outline"
+                    size="sm"
+                    className="h-8 border-slate-300/80 bg-white/90 px-3 text-xs"
+                  >
+                    <Dice5 className="size-3.5" />
+                    Random
+                  </Button>
+                  <Button
+                    onClick={() => movePhraseSelection("next")}
+                    variant="outline"
+                    size="sm"
+                    className="h-8 border-slate-300/80 bg-white/90 px-2.5 text-xs"
+                  >
+                    Next
+                    <ChevronRight className="size-3.5" />
+                  </Button>
+                </div>
+              )}
             </div>
             <div className="mt-4 rounded-xl border border-orange-200 bg-white px-4 py-4 shadow-sm">
               <div className="flex flex-wrap gap-x-2 gap-y-2">
@@ -361,13 +405,15 @@ const PronunciationAssessment = () => {
               </div>
             </div>
             <div className="mt-3 rounded-lg border border-slate-200/80 bg-white/80 px-4 py-3 text-sm text-slate-600">
-              {selectedPhrase?.ja ?? "日本語訳はありません。"}
+              {isFreeMode
+                ? "Free Mode: 英文を入力して発音評価できます。"
+                : (selectedPhrase?.ja ?? "日本語訳はありません。")}
             </div>
             <div className="mt-5 flex justify-center">
               {!isRecording ? (
                 <Button
                   onClick={startRecording}
-                  disabled={isLoading || !referenceText}
+                  disabled={isLoading || !referenceText || Boolean(freeModeInputError)}
                   size="lg"
                   className="h-12 rounded-full bg-emerald-600 px-8 text-base text-white shadow-lg shadow-emerald-500/35 hover:bg-emerald-500"
                 >

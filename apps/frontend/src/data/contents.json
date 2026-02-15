@@ -2,6 +2,7 @@
   "packages": [
     {
       "topic": "日々の雑談",
+      "mode": "curated",
       "phrases": [
         {
           "en": "I usually grab breakfast on the way to work.",
@@ -44,6 +45,7 @@
     },
     {
       "topic": "買い物",
+      "mode": "curated",
       "phrases": [
         {
           "en": "Could I try this on in a different size?",
@@ -80,6 +82,7 @@
     },
     {
       "topic": "レストラン",
+      "mode": "curated",
       "phrases": [
         { "en": "Could we get a table by the window?", "ja": "窓際の席にしてもらえますか？" },
         {
@@ -116,6 +119,7 @@
     },
     {
       "topic": "ビジネス",
+      "mode": "curated",
       "phrases": [
         {
           "en": "Could you share the latest version before the meeting?",
@@ -161,6 +165,7 @@
     },
     {
       "topic": "旅行",
+      "mode": "curated",
       "phrases": [
         {
           "en": "Could you tell me which platform this train leaves from?",
@@ -206,6 +211,7 @@
     },
     {
       "topic": "学校",
+      "mode": "curated",
       "phrases": [
         {
           "en": "Could you explain this assignment in a little more detail?",
@@ -251,6 +257,7 @@
     },
     {
       "topic": "病院",
+      "mode": "curated",
       "phrases": [
         {
           "en": "I've had a sore throat and a fever since yesterday.",
@@ -290,6 +297,7 @@
           "ja": "検査結果のコピーをいただけますか？"
         }
       ]
-    }
+    },
+    { "topic": "FREE TEXT", "mode": "free-text", "phrases": [] }
   ]
 }
