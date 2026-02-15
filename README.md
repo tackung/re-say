@@ -1,6 +1,17 @@
-# re-say!: Pronunciation Assessment App
+# re-say! ― Pronunciation Assessment App
 
 re-say! is English pronunciation assessment web application using Azure Speech Service.
+
+## What is this?
+(エレベーターピッチ)
+
+- `安価で英語の発音練習` がしたい
+- `英語学習者` 向けの、
+- `re-say!` というアプリは、
+- `AIによる英語発音評価アプリ` である。
+- これは `英文を音読することで発音の自動評価` ができ、
+- `既存の英語学習アプリ` とは違って、
+- `サブスクリプション費や受講料がほぼ無料で、ユーザが練習したい任意英文の発音評価や音素単位での発音評価機能` が備わっている。
 
 ## Features
 
@@ -9,6 +20,9 @@ re-say! is English pronunciation assessment web application using Azure Speech S
 - Get detailed pronunciation assessment from Azure Speech Service
 - View scores for accuracy, fluency, completeness, and prosody
 - Word-by-word analysis with error detection
+
+## Demo
+<img src="./images/re-say_demo.gif" alt="demo" width=60%>
 
 ## Tech Stack
 
