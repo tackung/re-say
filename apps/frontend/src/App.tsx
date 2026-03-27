@@ -36,7 +36,9 @@ function App() {
         <Route path="/singin" element={<Navigate to="/signin" replace />} />
         <Route
           path="/app"
-          element={user ? <AppPage userName={user.displayName} /> : <Navigate to="/signin" replace />}
+          element={
+            user ? <AppPage userName={user.displayName} /> : <Navigate to="/signin" replace />
+          }
         />
         <Route path="*" element={<Navigate to={user ? "/app" : "/signin"} replace />} />
       </Routes>

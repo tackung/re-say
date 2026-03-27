@@ -1,4 +1,5 @@
 import { AssessmentApiResponse } from "../../../../packages/shared/types/assessment";
+import { getCurrentUserIdToken } from "../lib/auth";
 
 const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
 
@@ -36,6 +37,13 @@ const readErrorResponse = async (response: Response): Promise<string> => {
   return `Server error: ${response.status}`;
 };
 
+const createAuthorizedHeaders = async (initHeaders?: HeadersInit): Promise<Headers> => {
+  const token = await getCurrentUserIdToken();
+  const headers = new Headers(initHeaders);
+  headers.set("Authorization", `Bearer ${token}`);
+  return headers;
+};
+
 export const assessPronunciation = async (
   audioBlob: Blob,
   referenceText: string,
@@ -47,6 +55,7 @@ export const assessPronunciation = async (
   const response = await fetch(buildApiUrl("/api/assess"), {
     method: "POST",
     body: formData,
+    headers: await createAuthorizedHeaders(),
   });
 
   if (!response.ok) {
@@ -71,9 +80,9 @@ export const assessPronunciation = async (
 export const synthesizeExampleSpeech = async (text: string): Promise<Blob> => {
   const response = await fetch(buildApiUrl("/api/tts"), {
     method: "POST",
-    headers: {
+    headers: await createAuthorizedHeaders({
       "Content-Type": "application/json",
-    },
+    }),
     body: JSON.stringify({ text }),
   });
 
@@ -92,5 +101,6 @@ export const synthesizeExampleSpeech = async (text: string): Promise<Blob> => {
     throw new Error("Speech synthesis API returned an unexpected response.");
   }
 
-  return response.blob();
+  const audioBuffer = await response.arrayBuffer();
+  return new Blob([audioBuffer], { type: contentType });
 };

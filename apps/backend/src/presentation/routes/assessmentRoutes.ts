@@ -4,6 +4,7 @@
 import { Router } from "express";
 import multer from "multer";
 import { AssessmentController } from "../controllers/AssessmentController.js";
+import { authenticateFirebaseUser } from "../middleware/authenticateFirebaseUser.js";
 
 export const createAssessmentRoutes = (
   controller: AssessmentController,
@@ -18,8 +19,8 @@ export const createAssessmentRoutes = (
   });
 
   router.get("/health", controller.healthCheck);
-  router.post("/assess", upload.single("audio"), controller.assess);
-  router.post("/tts", controller.synthesize);
+  router.post("/assess", authenticateFirebaseUser, upload.single("audio"), controller.assess);
+  router.post("/tts", authenticateFirebaseUser, controller.synthesize);
 
   return router;
 };

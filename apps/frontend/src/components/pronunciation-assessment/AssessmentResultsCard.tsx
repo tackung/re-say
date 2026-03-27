@@ -56,7 +56,10 @@ export const AssessmentResultsCard = ({ result }: AssessmentResultsCardProps) =>
 
         stopWordAudio();
 
-        const audio = new Audio(audioUrl);
+        const audio = new Audio();
+        audio.preload = "auto";
+        audio.setAttribute("playsinline", "true");
+        audio.src = audioUrl;
         wordAudioRef.current = audio;
 
         audio.onended = () => {
@@ -80,6 +83,7 @@ export const AssessmentResultsCard = ({ result }: AssessmentResultsCardProps) =>
           setWordAudioError("Failed to play word audio.");
         };
 
+        audio.load();
         await audio.play();
         setPlayingWordKey(wordKey);
       } catch (caught) {

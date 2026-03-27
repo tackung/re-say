@@ -15,9 +15,7 @@ const missingConfigEntries = Object.entries(firebaseConfig)
   .map(([key]) => key);
 
 if (missingConfigEntries.length > 0) {
-  throw new Error(
-    `Missing Firebase environment variables: ${missingConfigEntries.join(", ")}`,
-  );
+  throw new Error(`Missing Firebase environment variables: ${missingConfigEntries.join(", ")}`);
 }
 
 export const firebaseApp = initializeApp(firebaseConfig);

@@ -37,16 +37,27 @@ export const buildSentenceTokens = (
 };
 
 export const getSupportedMimeType = (): string => {
+  if (typeof MediaRecorder === "undefined" || typeof MediaRecorder.isTypeSupported !== "function") {
+    return "";
+  }
+
+  if (MediaRecorder.isTypeSupported("audio/mp4;codecs=mp4a.40.2")) {
+    return "audio/mp4;codecs=mp4a.40.2";
+  }
+  if (MediaRecorder.isTypeSupported("audio/mp4")) {
+    return "audio/mp4";
+  }
   if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
     return "audio/webm;codecs=opus";
   }
   if (MediaRecorder.isTypeSupported("audio/ogg;codecs=opus")) {
     return "audio/ogg;codecs=opus";
   }
-  if (MediaRecorder.isTypeSupported("audio/mp4")) {
-    return "audio/mp4";
+  if (MediaRecorder.isTypeSupported("audio/webm")) {
+    return "audio/webm";
   }
-  return "audio/webm";
+
+  return "";
 };
 
 export const getScoreBarClass = (score: number): string => {

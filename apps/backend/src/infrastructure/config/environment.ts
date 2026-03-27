@@ -1,11 +1,15 @@
 import dotenv from "dotenv";
+import os from "os";
 import path from "path";
 import { existsSync } from "fs";
 
 export interface EnvironmentConfig {
   azureSpeechKey: string;
   azureSpeechRegion: string;
+  corsAllowedOrigins: string[];
+  firebaseProjectId: string | undefined;
   port: number;
+  skipAuthInDev: boolean;
   nodeEnv: "development" | "production" | "test";
   uploadDir: string;
 }
@@ -42,6 +46,22 @@ const asPort = (value: string | undefined): number => {
   return parsed;
 };
 
+const asAllowedOrigins = (value: string | undefined): string[] => {
+  if (!value) {
+    return ["http://localhost:5173"];
+  }
+
+  return value
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
+};
+
+const asSkipAuthInDev = (
+  value: string | undefined,
+  nodeEnv: "development" | "production" | "test",
+): boolean => value === "true" && nodeEnv === "development";
+
 export class Environment {
   private static instance: Environment;
   private readonly config: EnvironmentConfig;
@@ -52,12 +72,17 @@ export class Environment {
       throw new Error("AZURE_SPEECH_KEY is not set in environment variables");
     }
 
+    const nodeEnv = asNodeEnv(process.env.NODE_ENV);
+
     this.config = {
       azureSpeechKey,
       azureSpeechRegion: process.env.AZURE_SPEECH_REGION || "japaneast",
+      corsAllowedOrigins: asAllowedOrigins(process.env.CORS_ALLOWED_ORIGINS),
+      firebaseProjectId: process.env.FIREBASE_PROJECT_ID || process.env.GOOGLE_CLOUD_PROJECT,
       port: asPort(process.env.PORT),
-      nodeEnv: asNodeEnv(process.env.NODE_ENV),
-      uploadDir: path.resolve(process.cwd(), "../../uploads"),
+      skipAuthInDev: asSkipAuthInDev(process.env.SKIP_AUTH_IN_DEV, nodeEnv),
+      nodeEnv,
+      uploadDir: process.env.UPLOAD_DIR || path.join(os.tmpdir(), "re-say-uploads"),
     };
   }
 
@@ -80,8 +105,20 @@ export class Environment {
     return this.config.port;
   }
 
+  public get firebaseProjectId(): string | undefined {
+    return this.config.firebaseProjectId;
+  }
+
+  public get corsAllowedOrigins(): string[] {
+    return this.config.corsAllowedOrigins;
+  }
+
   public get nodeEnv(): "development" | "production" | "test" {
     return this.config.nodeEnv;
+  }
+
+  public get skipAuthInDev(): boolean {
+    return this.config.skipAuthInDev;
   }
 
   public get uploadDir(): string {

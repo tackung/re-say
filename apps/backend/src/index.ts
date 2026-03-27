@@ -17,7 +17,21 @@ import { errorHandler } from "./presentation/middleware/errorHandler.js";
 const environment = Environment.getInstance();
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || environment.corsAllowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`Origin not allowed by CORS: ${origin}`));
+    },
+    credentials: false,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+  }),
+);
 app.use(express.json());
 
 const fileStorage = new FileStorage();

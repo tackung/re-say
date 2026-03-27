@@ -134,6 +134,24 @@ const PronunciationAssessment = () => {
     }
   };
 
+  const createMediaRecorder = (stream: MediaStream): MediaRecorder => {
+    const mimeType = getSupportedMimeType();
+
+    if (mimeType) {
+      try {
+        return new MediaRecorder(stream, { mimeType });
+      } catch (error) {
+        console.warn(
+          "[PronunciationAssessment] Failed to initialize MediaRecorder with mimeType:",
+          mimeType,
+          error,
+        );
+      }
+    }
+
+    return new MediaRecorder(stream);
+  };
+
   const startRecording = async (): Promise<void> => {
     try {
       stopExampleSpeech();
@@ -146,8 +164,8 @@ const PronunciationAssessment = () => {
         },
       });
 
-      const mimeType = getSupportedMimeType();
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
+      const mediaRecorder = createMediaRecorder(stream);
+      const mimeType = mediaRecorder.mimeType || getSupportedMimeType() || "audio/webm";
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
 
@@ -167,8 +185,12 @@ const PronunciationAssessment = () => {
       setIsRecording(true);
       setError(null);
       setResult(null);
-    } catch {
-      setError("Failed to access microphone. Please check your permissions.");
+    } catch (caught) {
+      setError(
+        caught instanceof Error
+          ? caught.message
+          : "Failed to access microphone. Please check your permissions.",
+      );
     }
   };
 
@@ -197,7 +219,10 @@ const PronunciationAssessment = () => {
 
       stopExampleSpeech();
 
-      const audio = new Audio(audioUrl);
+      const audio = new Audio();
+      audio.preload = "auto";
+      audio.setAttribute("playsinline", "true");
+      audio.src = audioUrl;
       exampleAudioRef.current = audio;
 
       audio.onended = () => {
@@ -221,6 +246,7 @@ const PronunciationAssessment = () => {
         setError("Failed to play example speech.");
       };
 
+      audio.load();
       await audio.play();
       setIsPlayingExampleSpeech(true);
     } catch (caught) {
