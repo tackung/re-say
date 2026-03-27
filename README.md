@@ -1,6 +1,7 @@
-# re-say! ― Pronunciation Assessment App
+# re-say! ― English Pronunciation Practice App
 
-re-say! is English pronunciation assessment web application using Azure Speech Service.
+Azure Speech Service を使った英語発音練習アプリ
+Google アカウントでログインし、ブラウザ上で録音した音声を発音評価 API に送り、文全体と単語・音素単位のフィードバックを確認できます。
 
 ## What is this?
 (エレベーターピッチ)
@@ -13,121 +14,146 @@ re-say! is English pronunciation assessment web application using Azure Speech S
 - `既存の英語学習アプリ` とは違って、
 - `サブスクリプション費や受講料がほぼ無料で、ユーザが練習したい任意英文の発音評価や音素単位での発音評価機能` が備わっている。
 
-## Features
+## Current Architecture
 
-- Record your voice directly in the browser
-- Convert audio to WAV format (PCM 16kHz mono)
-- Get detailed pronunciation assessment from Azure Speech Service
-- View scores for accuracy, fluency, completeness, and prosody
-- Word-by-word analysis with error detection
+- `frontend`: Vite + React + Firebase Hosting
+- `backend`: Express + TypeScript + Cloud Run
+- `auth`: Firebase Authentication (Google Sign-In)
+- `speech api`: Azure Speech Service
 
 ## Demo
 <img src="./images/re-say_demo.gif" alt="demo" width=25%>
 
 ## Tech Stack
 
-- **Frontend**:
+- Frontend
   - React
   - TypeScript
   - Vite
   - Tailwind CSS
   - shadcn/ui
-- **Backend**:
+  - Firebase Web SDK
+- Backend
   - Express
   - TypeScript
-- **API**:
-  - Azure Speech Service Pronunciation Assessment
+  - Firebase Admin SDK
+- Infrastructure
+  - Firebase Hosting
+  - Firebase Authentication
+  - Google Cloud Run
+  - Google Secret Manager
+  - Azure Speech Service
+
+## Repository Structure
+
+```text
+re-say/
+├── apps/
+│   ├── frontend/
+│   │   ├── src/
+│   │   └── package.json
+│   └── backend/
+│       ├── src/
+│       ├── Dockerfile
+│       └── package.json
+├── docs/
+│   ├── knowledge/
+│   └── specs/
+├── packages/
+│   └── shared/
+└── package.json
+```
 
 ## Prerequisites
 
-- Node.js 18 or higher
+- Node.js 18+
+- npm
 - Azure Speech Service subscription
+- Firebase project
+- Google Cloud project
 
-## Setup
+## Local Development
 
-### 1. Clone the repository
-
-```bash
-git clone <repository-url>
-cd re-say
-```
-
-### 2. Configure environment variables
-
-Copy the example environment file and fill in your Azure credentials:
+### 1. Install dependencies
 
 ```bash
-cp .env.example .env
+npm install
+cd apps/frontend && npm install
+cd ../backend && npm install
+cd ../..
 ```
 
-Edit `.env` and add your Azure Speech Service credentials:
+### 2. Configure frontend env
 
-```env
-AZURE_SPEECH_KEY=your_azure_speech_key_here
+Create `apps/frontend/.env.local`.
+
+```dotenv
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project-id.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=...
+VITE_FIREBASE_APP_ID=...
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+### 3. Configure backend env
+
+Create `apps/backend/.env`.
+
+```dotenv
+AZURE_SPEECH_KEY=...
 AZURE_SPEECH_REGION=japaneast
-PORT=3000
+FIREBASE_PROJECT_ID=your-firebase-project-id
+CORS_ALLOWED_ORIGINS=http://localhost:5173
+SKIP_AUTH_IN_DEV=true
 ```
 
-### 3. Install dependencies
+補足:
+- `SKIP_AUTH_IN_DEV=true` を付けると、ローカル開発時だけbackendのFirebase token検証をスキップ可能
 
-```bash
-# Install root dependencies
-npm install
-
-# Install frontend dependencies
-cd apps/frontend
-npm install
-cd ../..
-
-# Install backend dependencies
-cd apps/backend
-npm install
-cd ../..
-```
-
-## Development
-
-Run both frontend and backend in development mode:
+### 4. Run the app
 
 ```bash
 npm run dev
 ```
 
-This will start:
+起動先:
+- frontend: `http://localhost:5173`
+- backend: `http://localhost:3000`
 
-- Frontend dev server on http://localhost:5173
-- Backend server on http://localhost:3000
 
-## Usage
+## Security Model
 
-1. Open the application in your browser
-2. You'll see a practice text displayed (e.g., "Good morning.")
-3. Click the "🎤 Speak" button to start recording
-4. Read the text aloud
-5. Click the "⏹ Stop" button to finish recording
-6. Wait for the analysis (usually 2-5 seconds)
-7. View your pronunciation scores and word-by-word feedback
+- Google Sign-In 必須
+- frontend は Firebase ID token を `Authorization: Bearer ...` で backend に送信
+- backend は Firebase Admin SDK で token を検証
+- backend は CORS allowlist で frontend origin を制限
+- `AZURE_SPEECH_KEY` は Secret Manager 経由で管理
 
-## Project Structure
+## Main Scripts
 
+ルート:
+
+```bash
+npm run dev
+npm run build
+npm run format
 ```
-re-say/
-├── apps/
-│   ├── frontend/
-│   │   ├── src/
-│   │   │   ├── components/
-│   │   │   ├── services/
-│   │   │   └── lib/
-│   │   └── package.json
-│   └── backend/
-│       ├── src/
-│       │   ├── presentation/
-│       │   ├── application/
-│       │   ├── domain/
-│       │   └── infrastructure/
-│       └── package.json
-├── packages/
-│   └── shared/
-│       └── types/
-└── package.json          # Root package.json
+
+frontend:
+
+```bash
+cd apps/frontend
+npm run dev
+npm run build
+```
+
+backend:
+
+```bash
+cd apps/backend
+npm run dev
+npm run build
+npm run start
 ```
