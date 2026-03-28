@@ -74,26 +74,22 @@ export const PracticeContextCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
-            Package
-          </span>
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {practicePackages.map((pkg, index) => (
-              <button
-                key={pkg.topic}
-                type="button"
-                onClick={() => onSelectPackage(index)}
-                className={cn(
-                  "shrink-0 rounded-full border px-4 py-2 text-sm font-semibold transition-all",
-                  index === selectedPackageIndex
-                    ? "border-orange-400/50 bg-orange-500 text-white shadow-md shadow-orange-300/50"
-                    : "border-slate-300/70 bg-white/90 text-slate-700 hover:border-orange-300 hover:text-orange-700",
-                )}
-              >
-                {pkg.topic}
-              </button>
-            ))}
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
+              Package
+            </span>
+            <select
+              value={selectedPackageIndex}
+              onChange={(event) => onSelectPackage(Number(event.target.value))}
+              className="w-full rounded-xl border border-slate-300/80 bg-white/90 px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+            >
+              {practicePackages.map((pkg, index) => (
+                <option key={pkg.topic} value={index}>
+                  {pkg.topic}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -137,13 +133,13 @@ export const PracticeContextCard = ({
           )}
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 p-5 sm:p-6">
-          <div className="flex items-center justify-between">
-            <span className="rounded-full bg-orange-500 px-3 py-1 text-[11px] font-bold tracking-[0.18em] text-white uppercase">
+        <div className="space-y-1.5 rounded-2xl border border-slate-200/80 bg-gradient-to-b from-white to-slate-50 p-5 sm:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-xs font-semibold tracking-[0.18em] text-slate-500 uppercase">
               Read This
             </span>
             {!isFreeMode && (
-              <div className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
                 <Button
                   onClick={() => onMovePhraseSelection("prev")}
                   variant="outline"
@@ -175,7 +171,7 @@ export const PracticeContextCard = ({
             )}
           </div>
 
-          <div className="mt-4 rounded-xl border border-orange-200 bg-white px-4 py-4 shadow-sm">
+          <div className="rounded-xl border border-slate-300/80 bg-white/90 px-4 py-4 shadow-sm">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
               {sentenceTokens.length > 0 ? (
                 sentenceTokens.map((item, index) => (

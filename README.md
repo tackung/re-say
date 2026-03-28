@@ -4,6 +4,7 @@ Azure Speech Service を使った英語発音練習アプリ
 Google アカウントでログインし、ブラウザ上で録音した音声を発音評価 API に送り、文全体と単語・音素単位のフィードバックを確認できます。
 
 ## What is this?
+
 (エレベーターピッチ)
 
 - `安価で英語の発音練習` がしたい
@@ -22,6 +23,7 @@ Google アカウントでログインし、ブラウザ上で録音した音声�
 - `speech api`: Azure Speech Service
 
 ## Demo
+
 <img src="./images/re-say_demo.gif" alt="demo" width=25%>
 
 ## Tech Stack
@@ -110,6 +112,7 @@ SKIP_AUTH_IN_DEV=true
 ```
 
 補足:
+
 - `SKIP_AUTH_IN_DEV=true` を付けると、ローカル開発時だけbackendのFirebase token検証をスキップ可能
 
 ### 4. Run the app
@@ -119,9 +122,9 @@ npm run dev
 ```
 
 起動先:
+
 - frontend: `http://localhost:5173`
 - backend: `http://localhost:3000`
-
 
 ## Security Model
 
