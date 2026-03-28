@@ -6,13 +6,10 @@ import multer from "multer";
 import { AssessmentController } from "../controllers/AssessmentController.js";
 import { authenticateFirebaseUser } from "../middleware/authenticateFirebaseUser.js";
 
-export const createAssessmentRoutes = (
-  controller: AssessmentController,
-  uploadDir: string,
-): Router => {
+export const createAssessmentRoutes = (controller: AssessmentController): Router => {
   const router = Router();
   const upload = multer({
-    dest: uploadDir,
+    storage: multer.memoryStorage(),
     limits: {
       fileSize: 10 * 1024 * 1024,
     },

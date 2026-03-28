@@ -3,14 +3,12 @@
  */
 import { Request, Response, NextFunction } from "express";
 import { IPronunciationAssessmentService } from "../../application/services/PronunciationAssessmentService.js";
-import { IFileStorage } from "../../infrastructure/storage/FileStorage.js";
 import { AssessmentApiResponse, HealthCheckResponse } from "../../domain/types/assessment.js";
 import { IAzureSpeechClient } from "../../infrastructure/azureSpeech/AzureSpeechClient.js";
 
 export class AssessmentController {
   constructor(
     private readonly assessmentService: IPronunciationAssessmentService,
-    private readonly fileStorage: IFileStorage,
     private readonly azureSpeechClient: IAzureSpeechClient,
   ) {}
 
@@ -36,7 +34,6 @@ export class AssessmentController {
       const referenceText = typeof referenceTextRaw === "string" ? referenceTextRaw.trim() : "";
 
       if (!referenceText) {
-        await this.fileStorage.deleteFile(req.file.path);
         res.status(400).json({
           status: "error",
           error: "Reference text is required",
@@ -44,18 +41,13 @@ export class AssessmentController {
         return;
       }
 
-      const result = await this.assessmentService.assessFromFile(req.file.path, referenceText);
-
-      await this.fileStorage.deleteFile(req.file.path);
+      const result = await this.assessmentService.assessFromAudio(req.file.buffer, referenceText);
 
       res.json({
         status: "success",
         result,
       } as AssessmentApiResponse);
     } catch (error) {
-      if (req.file) {
-        await this.fileStorage.deleteFile(req.file.path).catch(console.error);
-      }
       next(error);
     }
   };

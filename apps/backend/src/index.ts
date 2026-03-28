@@ -5,7 +5,6 @@ import express from "express";
 import cors from "cors";
 
 import { Environment } from "./infrastructure/config/environment.js";
-import { FileStorage } from "./infrastructure/storage/FileStorage.js";
 import { AzureSpeechClient } from "./infrastructure/azureSpeech/AzureSpeechClient.js";
 
 import { PronunciationAssessmentService } from "./application/services/PronunciationAssessmentService.js";
@@ -34,18 +33,11 @@ app.use(
 );
 app.use(express.json());
 
-const fileStorage = new FileStorage();
-await fileStorage.ensureDirectory(environment.uploadDir);
-
 const azureSpeechClient = new AzureSpeechClient();
-const assessmentService = new PronunciationAssessmentService(azureSpeechClient, fileStorage);
-const assessmentController = new AssessmentController(
-  assessmentService,
-  fileStorage,
-  azureSpeechClient,
-);
+const assessmentService = new PronunciationAssessmentService(azureSpeechClient);
+const assessmentController = new AssessmentController(assessmentService, azureSpeechClient);
 
-app.use("/api", createAssessmentRoutes(assessmentController, environment.uploadDir));
+app.use("/api", createAssessmentRoutes(assessmentController));
 app.use(errorHandler);
 
 app.listen(environment.port, () => {
