@@ -5,6 +5,8 @@ import {
   LoaderCircle,
   Mic,
   OctagonMinus,
+  Play,
+  Square,
   Sparkles,
   Volume2,
   VolumeX,
@@ -35,10 +37,13 @@ type PracticeContextCardProps = {
   isLoading: boolean;
   isSynthesizingSpeech: boolean;
   isPlayingExampleSpeech: boolean;
+  hasSelfRecording: boolean;
+  isPlayingSelfRecording: boolean;
   referenceText: string;
   onStartRecording: () => void;
   onStopRecording: () => void;
   onPlayExampleSpeech: () => void;
+  onPlaySelfRecording: () => void;
 };
 
 export const PracticeContextCard = ({
@@ -60,10 +65,13 @@ export const PracticeContextCard = ({
   isLoading,
   isSynthesizingSpeech,
   isPlayingExampleSpeech,
+  hasSelfRecording,
+  isPlayingSelfRecording,
   referenceText,
   onStartRecording,
   onStopRecording,
   onPlayExampleSpeech,
+  onPlaySelfRecording,
 }: PracticeContextCardProps) => {
   return (
     <Card className="overflow-hidden border-slate-900/10 bg-white/80 shadow-[0_24px_80px_-36px_rgba(15,23,42,0.55)] backdrop-blur dark:border-white/10 dark:bg-slate-900/65">
@@ -204,54 +212,84 @@ export const PracticeContextCard = ({
               : (selectedPhraseJa ?? "日本語訳はありません")}
           </div>
 
-          <div className="mt-5 flex flex-wrap justify-center gap-7">
-            {!isRecording ? (
-              <Button
-                onClick={onStartRecording}
-                disabled={
-                  isLoading ||
-                  isSynthesizingSpeech ||
-                  isPlayingExampleSpeech ||
-                  !referenceText ||
-                  Boolean(freeModeInputError)
-                }
-                size="lg"
-                className="h-12 rounded-full bg-emerald-600 px-8 text-base text-white shadow-lg shadow-emerald-500/35 hover:bg-emerald-500"
-              >
-                <Mic className="size-4" />
-                Speak
-              </Button>
-            ) : (
-              <Button
-                onClick={onStopRecording}
-                size="lg"
-                className="h-12 rounded-full bg-rose-600 px-8 text-base text-white shadow-lg shadow-rose-500/35 hover:bg-rose-500"
-              >
-                <OctagonMinus className="size-4" />
-                Stop
-              </Button>
-            )}
-
-            <Button
-              onClick={onPlayExampleSpeech}
-              disabled={isLoading || isRecording || !referenceText || Boolean(freeModeInputError)}
-              size="lg"
-              className={cn(
-                "h-12 rounded-full px-8 text-base text-white shadow-lg",
-                isPlayingExampleSpeech
-                  ? "bg-slate-700 shadow-slate-500/35 hover:bg-slate-600"
-                  : "bg-sky-600 shadow-sky-500/35 hover:bg-sky-500",
-              )}
-            >
-              {isSynthesizingSpeech ? (
-                <LoaderCircle className="size-4 animate-spin" />
-              ) : isPlayingExampleSpeech ? (
-                <VolumeX className="size-4" />
+          <div className="mt-5 flex justify-center">
+            <div className="inline-grid gap-3">
+              {!isRecording ? (
+                <Button
+                  onClick={onStartRecording}
+                  disabled={
+                    isLoading ||
+                    isSynthesizingSpeech ||
+                    isPlayingExampleSpeech ||
+                    isPlayingSelfRecording ||
+                    !referenceText ||
+                    Boolean(freeModeInputError)
+                  }
+                  size="lg"
+                  className="h-12 w-full rounded-full bg-emerald-600 px-10 text-base text-white shadow-lg shadow-emerald-500/35 hover:bg-emerald-500"
+                >
+                  <Mic className="size-4" />
+                  Speak
+                </Button>
               ) : (
-                <Volume2 className="size-4" />
+                <Button
+                  onClick={onStopRecording}
+                  size="lg"
+                  className="h-12 w-full rounded-full bg-rose-600 px-10 text-base text-white shadow-lg shadow-rose-500/35 hover:bg-rose-500"
+                >
+                  <OctagonMinus className="size-4" />
+                  Stop
+                </Button>
               )}
-              {isPlayingExampleSpeech ? "Stop" : "Listen"}
-            </Button>
+
+              <div className="flex gap-4">
+                <Button
+                  onClick={onPlayExampleSpeech}
+                  disabled={
+                    isLoading ||
+                    isRecording ||
+                    isPlayingSelfRecording ||
+                    !referenceText ||
+                    Boolean(freeModeInputError)
+                  }
+                  size="lg"
+                  className={cn(
+                    "h-12 rounded-full px-8 text-base text-white shadow-lg",
+                    isPlayingExampleSpeech
+                      ? "bg-slate-700 shadow-slate-500/35 hover:bg-slate-600"
+                      : "bg-sky-600 shadow-sky-500/35 hover:bg-sky-500",
+                  )}
+                >
+                  {isSynthesizingSpeech ? (
+                    <LoaderCircle className="size-4 animate-spin" />
+                  ) : isPlayingExampleSpeech ? (
+                    <VolumeX className="size-4" />
+                  ) : (
+                    <Volume2 className="size-4" />
+                  )}
+                  {isPlayingExampleSpeech ? "Stop" : "Listen"}
+                </Button>
+
+                <Button
+                  onClick={onPlaySelfRecording}
+                  disabled={isLoading || isRecording || isPlayingExampleSpeech || !hasSelfRecording}
+                  size="lg"
+                  className={cn(
+                    "h-12 rounded-full px-8 text-base text-white shadow-lg",
+                    isPlayingSelfRecording
+                      ? "bg-slate-700 shadow-slate-500/35 hover:bg-slate-600"
+                      : "bg-amber-600 shadow-amber-500/35 hover:bg-amber-500",
+                  )}
+                >
+                  {isPlayingSelfRecording ? (
+                    <Square className="size-4" />
+                  ) : (
+                    <Play className="size-4" />
+                  )}
+                  {isPlayingSelfRecording ? "Stop" : "Replay"}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>

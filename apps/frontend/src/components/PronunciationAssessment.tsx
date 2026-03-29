@@ -34,10 +34,14 @@ const PronunciationAssessment = () => {
   const [freeModeSentenceInput, setFreeModeSentenceInput] = useState("");
   const [isSynthesizingSpeech, setIsSynthesizingSpeech] = useState(false);
   const [isPlayingExampleSpeech, setIsPlayingExampleSpeech] = useState(false);
+  const [hasSelfRecording, setHasSelfRecording] = useState(false);
+  const [isPlayingSelfRecording, setIsPlayingSelfRecording] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const exampleAudioRef = useRef<HTMLAudioElement | null>(null);
+  const selfRecordingAudioRef = useRef<HTMLAudioElement | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
+  const selfRecordingUrlRef = useRef<string | null>(null);
 
   const selectedPackage =
     selectedPackageIndex >= 0 ? practicePackages[selectedPackageIndex] : undefined;
@@ -83,6 +87,42 @@ const PronunciationAssessment = () => {
     setIsPlayingExampleSpeech(false);
   }, []);
 
+  const stopSelfRecordingPlayback = useCallback((): void => {
+    const audio = selfRecordingAudioRef.current;
+    if (!audio) {
+      return;
+    }
+
+    audio.pause();
+    audio.onended = null;
+    audio.onerror = null;
+    selfRecordingAudioRef.current = null;
+    setIsPlayingSelfRecording(false);
+  }, []);
+
+  const clearSelfRecording = useCallback((): void => {
+    stopSelfRecordingPlayback();
+
+    const currentUrl = selfRecordingUrlRef.current;
+    if (currentUrl?.startsWith("blob:")) {
+      URL.revokeObjectURL(currentUrl);
+    }
+
+    selfRecordingUrlRef.current = null;
+    setHasSelfRecording(false);
+  }, [stopSelfRecordingPlayback]);
+
+  const storeSelfRecording = useCallback(
+    (audioBlob: Blob): void => {
+      clearSelfRecording();
+
+      const audioUrl = URL.createObjectURL(audioBlob);
+      selfRecordingUrlRef.current = audioUrl;
+      setHasSelfRecording(true);
+    },
+    [clearSelfRecording],
+  );
+
   const movePhraseSelection = (direction: "prev" | "next"): void => {
     if (availablePhrases.length === 0) {
       return;
@@ -104,35 +144,39 @@ const PronunciationAssessment = () => {
     setSelectedPhraseIndex(randomIndex);
   };
 
-  const processAudio = async (audioBlob: Blob): Promise<void> => {
-    if (isFreeMode && freeModeInputError) {
-      setError(freeModeInputError);
-      return;
-    }
-
-    if (!referenceText) {
-      setError("Practice sentence is not selected.");
-      return;
-    }
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const wavBlob = await convertToWav(audioBlob);
-      const data: AssessmentApiResponse = await assessPronunciation(wavBlob, referenceText);
-
-      if (data.status === "error") {
-        throw new Error(data.error);
+  const processAudio = useCallback(
+    async (audioBlob: Blob): Promise<void> => {
+      if (isFreeMode && freeModeInputError) {
+        setError(freeModeInputError);
+        return;
       }
 
-      setResult(data.result);
-    } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Failed to process audio");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      if (!referenceText) {
+        setError("Practice sentence is not selected.");
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const wavBlob = await convertToWav(audioBlob);
+        storeSelfRecording(wavBlob);
+        const data: AssessmentApiResponse = await assessPronunciation(wavBlob, referenceText);
+
+        if (data.status === "error") {
+          throw new Error(data.error);
+        }
+
+        setResult(data.result);
+      } catch (caught) {
+        setError(caught instanceof Error ? caught.message : "Failed to process audio");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [freeModeInputError, isFreeMode, referenceText, storeSelfRecording],
+  );
 
   const createMediaRecorder = (stream: MediaStream): MediaRecorder => {
     const mimeType = getSupportedMimeType();
@@ -155,6 +199,7 @@ const PronunciationAssessment = () => {
   const startRecording = async (): Promise<void> => {
     try {
       stopExampleSpeech();
+      stopSelfRecordingPlayback();
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           channelCount: 1,
@@ -191,6 +236,53 @@ const PronunciationAssessment = () => {
           ? caught.message
           : "Failed to access microphone. Please check your permissions.",
       );
+    }
+  };
+
+  const playSelfRecording = async (): Promise<void> => {
+    if (isPlayingSelfRecording) {
+      stopSelfRecordingPlayback();
+      return;
+    }
+
+    const audioUrl = selfRecordingUrlRef.current;
+    if (!audioUrl) {
+      setError("No recording available to replay.");
+      return;
+    }
+
+    setError(null);
+    stopExampleSpeech();
+    stopSelfRecordingPlayback();
+
+    try {
+      const audio = new Audio();
+      audio.preload = "auto";
+      audio.setAttribute("playsinline", "true");
+      audio.src = audioUrl;
+      selfRecordingAudioRef.current = audio;
+
+      audio.onended = () => {
+        if (selfRecordingAudioRef.current === audio) {
+          selfRecordingAudioRef.current = null;
+        }
+        setIsPlayingSelfRecording(false);
+      };
+
+      audio.onerror = () => {
+        if (selfRecordingAudioRef.current === audio) {
+          selfRecordingAudioRef.current = null;
+        }
+        setIsPlayingSelfRecording(false);
+        setError("Failed to play your recording.");
+      };
+
+      audio.load();
+      await audio.play();
+      setIsPlayingSelfRecording(true);
+    } catch (caught) {
+      stopSelfRecordingPlayback();
+      setError(caught instanceof Error ? caught.message : "Failed to play your recording.");
     }
   };
 
@@ -283,12 +375,14 @@ const PronunciationAssessment = () => {
     setSelectedPhraseIndex(0);
     setResult(null);
     setError(null);
-  }, [selectedPackageIndex]);
+    clearSelfRecording();
+  }, [clearSelfRecording, selectedPackageIndex]);
 
   useEffect(() => {
     setResult(null);
     setError(null);
-  }, [selectedPhraseIndex]);
+    clearSelfRecording();
+  }, [clearSelfRecording, selectedPhraseIndex]);
 
   useEffect(() => {
     if (!isFreeMode) {
@@ -296,13 +390,16 @@ const PronunciationAssessment = () => {
     }
     setResult(null);
     setError(null);
-  }, [freeModeSentenceInput, isFreeMode]);
+    clearSelfRecording();
+  }, [clearSelfRecording, freeModeSentenceInput, isFreeMode]);
 
   useEffect(() => {
     stopExampleSpeech();
-  }, [referenceText, stopExampleSpeech]);
+    stopSelfRecordingPlayback();
+  }, [referenceText, stopExampleSpeech, stopSelfRecordingPlayback]);
 
   useEffect(() => () => stopExampleSpeech(), [stopExampleSpeech]);
+  useEffect(() => () => clearSelfRecording(), [clearSelfRecording]);
 
   return (
     <div className="space-y-6">
@@ -325,10 +422,13 @@ const PronunciationAssessment = () => {
         isLoading={isLoading}
         isSynthesizingSpeech={isSynthesizingSpeech}
         isPlayingExampleSpeech={isPlayingExampleSpeech}
+        hasSelfRecording={hasSelfRecording}
+        isPlayingSelfRecording={isPlayingSelfRecording}
         referenceText={referenceText}
         onStartRecording={startRecording}
         onStopRecording={stopRecording}
         onPlayExampleSpeech={playExampleSpeech}
+        onPlaySelfRecording={playSelfRecording}
       />
 
       {isLoading && (
@@ -346,7 +446,7 @@ const PronunciationAssessment = () => {
       {error && (
         <Alert variant="destructive">
           <TriangleAlert className="size-4" />
-          <AlertTitle>Assessment failed</AlertTitle>
+          <AlertTitle>Action failed</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
