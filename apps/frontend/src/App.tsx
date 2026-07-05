@@ -3,6 +3,7 @@ import { type User } from "firebase/auth";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { observeAuthState } from "@/lib/auth";
 import AppPage from "@/routes/AppPage";
+import FlashCardsPage from "@/routes/FlashCardsPage";
 import SignInPage from "@/routes/SignInPage";
 
 function App() {
@@ -38,6 +39,16 @@ function App() {
           path="/app"
           element={
             user ? <AppPage userName={user.displayName} /> : <Navigate to="/signin" replace />
+          }
+        />
+        <Route
+          path="/flash_cards"
+          element={
+            user ? (
+              <FlashCardsPage userName={user.displayName} />
+            ) : (
+              <Navigate to="/signin" replace />
+            )
           }
         />
         <Route path="*" element={<Navigate to={user ? "/app" : "/signin"} replace />} />

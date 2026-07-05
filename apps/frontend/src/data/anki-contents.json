@@ -1,0 +1,598 @@
+{
+  "packages": [
+    {
+      "topic": "Repair and clarification",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "Sorry, could you say that again?",
+          "questionJa": "すみません、もう一度言ってもらえますか？",
+          "answer": "Sure. I said the train leaves at 3:20.",
+          "answerJa": "もちろんです。電車は3時20分に出ると言いました。"
+        },
+        {
+          "question": "Could you say that more slowly?",
+          "questionJa": "もう少しゆっくり言ってもらえますか？",
+          "answer": "Of course. I’ll speak more slowly.",
+          "answerJa": "もちろんです。もう少しゆっくり話します。"
+        },
+        {
+          "question": "Could you repeat the last part?",
+          "questionJa": "最後の部分だけもう一度お願いできますか？",
+          "answer": "Sure. The gate number is 24.",
+          "answerJa": "もちろんです。ゲート番号は24です。"
+        },
+        {
+          "question": "Sorry, I didn’t catch that.",
+          "questionJa": "すみません、聞き取れませんでした。",
+          "answer": "No problem. I’ll say it again.",
+          "answerJa": "大丈夫です。もう一度言います。"
+        },
+        {
+          "question": "Do you mean I should pay here?",
+          "questionJa": "つまり、ここで支払えばいいということですか？",
+          "answer": "Yes, please pay at this counter.",
+          "answerJa": "はい、このカウンターで支払ってください。"
+        },
+        {
+          "question": "So I need to go to gate 24, right?",
+          "questionJa": "つまり、24番ゲートに行けばいいんですよね？",
+          "answer": "Yes, that’s right. Gate 24 is this way.",
+          "answerJa": "はい、その通りです。24番ゲートはこちらです。"
+        },
+        {
+          "question": "What does that mean?",
+          "questionJa": "それはどういう意味ですか？",
+          "answer": "It means you need to wait here.",
+          "answerJa": "ここで待つ必要があるという意味です。"
+        },
+        {
+          "question": "What does this word mean?",
+          "questionJa": "この単語はどういう意味ですか？",
+          "answer": "It means the item is not available right now.",
+          "answerJa": "その商品は今は利用できないという意味です。"
+        },
+        {
+          "question": "Can you decide now?",
+          "questionJa": "今決められますか？",
+          "answer": "Let me think for a second.",
+          "answerJa": "少し考えさせてください。"
+        },
+        {
+          "question": "Could you say that one more time?",
+          "questionJa": "もう一度言ってもらえますか？",
+          "answer": "Sorry, let me try again.",
+          "answerJa": "すみません、もう一度言い直します。"
+        }
+      ]
+    },
+    {
+      "topic": "Airport and immigration",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "What is the purpose of your visit?",
+          "questionJa": "渡航目的は何ですか？",
+          "answer": "I’m here for sightseeing.",
+          "answerJa": "観光で来ました。"
+        },
+        {
+          "question": "How long will you stay?",
+          "questionJa": "どれくらい滞在しますか？",
+          "answer": "I’ll stay for seven days.",
+          "answerJa": "7日間滞在します。"
+        },
+        {
+          "question": "Where are you staying?",
+          "questionJa": "どこに滞在しますか？",
+          "answer": "I’m staying at this hotel.",
+          "answerJa": "このホテルに泊まります。"
+        },
+        {
+          "question": "Do you have a return ticket?",
+          "questionJa": "帰りの航空券は持っていますか？",
+          "answer": "Yes, I have a return ticket.",
+          "answerJa": "はい、帰りの航空券を持っています。"
+        },
+        {
+          "question": "Are you here for work?",
+          "questionJa": "仕事で来ましたか？",
+          "answer": "No, I’m here on vacation, not for work.",
+          "answerJa": "いいえ、仕事ではなく休暇です。"
+        },
+        {
+          "question": "Is this your first time here?",
+          "questionJa": "ここに来るのは初めてですか？",
+          "answer": "Yes, this is my first time in this country.",
+          "answerJa": "はい、この国に来るのは初めてです。"
+        },
+        {
+          "question": "Do you have anything to declare?",
+          "questionJa": "申告するものはありますか？",
+          "answer": "I have nothing to declare.",
+          "answerJa": "申告するものはありません。"
+        },
+        {
+          "question": "Could you open your bag, please?",
+          "questionJa": "バッグを開けてもらえますか？",
+          "answer": "Sure. This is all my luggage.",
+          "answerJa": "はい。荷物はこれだけです。"
+        },
+        {
+          "question": "Where should I go next after immigration?",
+          "questionJa": "入国審査の後、次にどこへ行けばよいですか？",
+          "answer": "Please go to baggage claim on the right.",
+          "answerJa": "右側の手荷物受取所へ行ってください。"
+        },
+        {
+          "question": "Are you meeting anyone during your trip?",
+          "questionJa": "旅行中に誰かに会う予定はありますか？",
+          "answer": "Yes, I’m here to meet a friend.",
+          "answerJa": "はい、友人に会いに来ました。"
+        }
+      ]
+    },
+    {
+      "topic": "Hotel",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "Hello. How can I help you?",
+          "questionJa": "こんにちは。ご用件をお伺いします。",
+          "answer": "I’d like to check in.",
+          "answerJa": "チェックインしたいです。"
+        },
+        {
+          "question": "Do you have a reservation?",
+          "questionJa": "予約はありますか？",
+          "answer": "Yes, I have a reservation.",
+          "answerJa": "はい、予約しています。"
+        },
+        {
+          "question": "May I have your name?",
+          "questionJa": "お名前を教えていただけますか？",
+          "answer": "My name is Taro Yamada.",
+          "answerJa": "名前は山田太郎です。"
+        },
+        {
+          "question": "May I see your passport?",
+          "questionJa": "パスポートを見せていただけますか？",
+          "answer": "Sure. Should I show my passport here?",
+          "answerJa": "はい。ここでパスポートを見せればいいですか？"
+        },
+        {
+          "question": "Is breakfast included?",
+          "questionJa": "朝食は含まれていますか？",
+          "answer": "Yes, breakfast is included from 7 to 10.",
+          "answerJa": "はい、朝食は7時から10時まで含まれています。"
+        },
+        {
+          "question": "Could you tell me the Wi-Fi password?",
+          "questionJa": "Wi-Fiのパスワードを教えてもらえますか？",
+          "answer": "Sure. It’s written on this card.",
+          "answerJa": "もちろんです。このカードに書いてあります。"
+        },
+        {
+          "question": "What time is check-out?",
+          "questionJa": "チェックアウトは何時ですか？",
+          "answer": "Check-out is at 11 a.m.",
+          "answerJa": "チェックアウトは午前11時です。"
+        },
+        {
+          "question": "Could you keep my luggage?",
+          "questionJa": "荷物を預かってもらえますか？",
+          "answer": "Of course. We can keep it at the front desk.",
+          "answerJa": "もちろんです。フロントでお預かりできます。"
+        },
+        {
+          "question": "What seems to be the problem with your room?",
+          "questionJa": "お部屋にどのような問題がありますか？",
+          "answer": "The air conditioner in my room doesn’t work.",
+          "answerJa": "部屋のエアコンが動きません。"
+        },
+        {
+          "question": "Is it possible to change rooms?",
+          "questionJa": "部屋を変えてもらうことはできますか？",
+          "answer": "Let me check. We may have another room available.",
+          "answerJa": "確認します。別の部屋が空いているかもしれません。"
+        }
+      ]
+    },
+    {
+      "topic": "Restaurant",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "How many people?",
+          "questionJa": "何名ですか？",
+          "answer": "Table for one, please.",
+          "answerJa": "1人です。"
+        },
+        {
+          "question": "How many people?",
+          "questionJa": "何名ですか？",
+          "answer": "Table for two, please.",
+          "answerJa": "2人です。"
+        },
+        {
+          "question": "Could I see the menu?",
+          "questionJa": "メニューを見てもいいですか？",
+          "answer": "Of course. Here you go.",
+          "answerJa": "もちろんです。どうぞ。"
+        },
+        {
+          "question": "Do you have any recommendations?",
+          "questionJa": "おすすめはありますか？",
+          "answer": "Yes, the grilled fish is very popular.",
+          "answerJa": "はい、焼き魚がとても人気です。"
+        },
+        {
+          "question": "What is this?",
+          "questionJa": "これは何ですか？",
+          "answer": "It’s a local soup with vegetables and chicken.",
+          "answerJa": "野菜と鶏肉が入った地元のスープです。"
+        },
+        {
+          "question": "Is it spicy?",
+          "questionJa": "辛いですか？",
+          "answer": "It’s a little spicy, but we can make it mild.",
+          "answerJa": "少し辛いですが、辛さ控えめにできます。"
+        },
+        {
+          "question": "Could you make it not spicy?",
+          "questionJa": "辛くしないでください。",
+          "answer": "Sure. We’ll make it not spicy.",
+          "answerJa": "承知しました。辛くしないようにします。"
+        },
+        {
+          "question": "Are you ready to order?",
+          "questionJa": "ご注文はお決まりですか？",
+          "answer": "I’ll have this, please.",
+          "answerJa": "これをお願いします。"
+        },
+        {
+          "question": "Could I have some water?",
+          "questionJa": "水をもらえますか？",
+          "answer": "Sure. I’ll bring it right away.",
+          "answerJa": "もちろんです。すぐにお持ちします。"
+        },
+        {
+          "question": "Could I have the bill, please?",
+          "questionJa": "お会計をお願いします。",
+          "answer": "Of course. I’ll bring it to your table.",
+          "answerJa": "承知しました。テーブルまでお持ちします。"
+        }
+      ]
+    },
+    {
+      "topic": "Shopping",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "How much is this?",
+          "questionJa": "これはいくらですか？",
+          "answer": "It’s twenty dollars.",
+          "answerJa": "20ドルです。"
+        },
+        {
+          "question": "Can I help you find anything?",
+          "questionJa": "何かお探しですか？",
+          "answer": "I’m just looking, thank you.",
+          "answerJa": "見ているだけです。ありがとうございます。"
+        },
+        {
+          "question": "Do you have this in a smaller size?",
+          "questionJa": "これの小さいサイズはありますか？",
+          "answer": "Yes, we have a small size in the back.",
+          "answerJa": "はい、奥に小さいサイズがあります。"
+        },
+        {
+          "question": "Do you have this in another color?",
+          "questionJa": "これの別の色はありますか？",
+          "answer": "Yes, we also have it in black and blue.",
+          "answerJa": "はい、黒と青もあります。"
+        },
+        {
+          "question": "Can I try this on?",
+          "questionJa": "試着してもいいですか？",
+          "answer": "Sure. The fitting room is over there.",
+          "answerJa": "もちろんです。試着室はあちらです。"
+        },
+        {
+          "question": "Can I pay by card?",
+          "questionJa": "カードで払えますか？",
+          "answer": "Yes, we accept credit cards.",
+          "answerJa": "はい、クレジットカードをご利用いただけます。"
+        },
+        {
+          "question": "How would you like to pay?",
+          "questionJa": "お支払い方法はどうされますか？",
+          "answer": "I’ll pay in cash.",
+          "answerJa": "現金で払います。"
+        },
+        {
+          "question": "Could I have a bag?",
+          "questionJa": "袋をもらえますか？",
+          "answer": "Sure. A small bag is free.",
+          "answerJa": "もちろんです。小さい袋は無料です。"
+        },
+        {
+          "question": "Could I have a receipt?",
+          "questionJa": "レシートをもらえますか？",
+          "answer": "Of course. Here is your receipt.",
+          "answerJa": "もちろんです。こちらがレシートです。"
+        },
+        {
+          "question": "Is this tax-free?",
+          "questionJa": "これは免税できますか？",
+          "answer": "Yes, if you show your passport.",
+          "answerJa": "はい、パスポートを提示すれば免税できます。"
+        }
+      ]
+    },
+    {
+      "topic": "Transport and directions",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "Where would you like to go?",
+          "questionJa": "どちらまで行きたいですか？",
+          "answer": "I’d like to go to the airport.",
+          "answerJa": "空港まで行きたいです。"
+        },
+        {
+          "question": "Could you show me the address?",
+          "questionJa": "住所を見せてもらえますか？",
+          "answer": "Please take me to this address.",
+          "answerJa": "この住所までお願いします。"
+        },
+        {
+          "question": "How long does it take from here?",
+          "questionJa": "ここからどれくらいかかりますか？",
+          "answer": "It takes about twenty minutes by train.",
+          "answerJa": "電車で約20分かかります。"
+        },
+        {
+          "question": "Where is the station?",
+          "questionJa": "駅はどこですか？",
+          "answer": "It’s two blocks down this street.",
+          "answerJa": "この通りを2ブロック先にあります。"
+        },
+        {
+          "question": "Can I walk there from here?",
+          "questionJa": "ここから歩けますか？",
+          "answer": "Yes, it’s about a ten-minute walk.",
+          "answerJa": "はい、歩いて約10分です。"
+        },
+        {
+          "question": "Could you call a taxi?",
+          "questionJa": "タクシーを呼んでもらえますか？",
+          "answer": "Sure. It should arrive in about five minutes.",
+          "answerJa": "もちろんです。約5分で到着するはずです。"
+        },
+        {
+          "question": "Does this train go to the airport?",
+          "questionJa": "この電車は空港に行きますか？",
+          "answer": "Yes, but you need to change trains once.",
+          "answerJa": "はい、ただし一度乗り換えが必要です。"
+        },
+        {
+          "question": "Which platform should I go to?",
+          "questionJa": "どのホームに行けばいいですか？",
+          "answer": "Please go to platform three.",
+          "answerJa": "3番ホームへ行ってください。"
+        },
+        {
+          "question": "Should I get off at the next station?",
+          "questionJa": "次の駅で降りればいいですか？",
+          "answer": "Yes, get off at the next station.",
+          "answerJa": "はい、次の駅で降りてください。"
+        },
+        {
+          "question": "Are you lost?",
+          "questionJa": "道に迷っていますか？",
+          "answer": "Yes, I’m lost. Could you help me?",
+          "answerJa": "はい、道に迷いました。助けてもらえますか？"
+        }
+      ]
+    },
+    {
+      "topic": "Trouble and health",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "Could you help me?",
+          "questionJa": "助けてもらえますか？",
+          "answer": "Of course. What happened?",
+          "answerJa": "もちろんです。何がありましたか？"
+        },
+        {
+          "question": "What happened?",
+          "questionJa": "何がありましたか？",
+          "answer": "I lost my wallet.",
+          "answerJa": "財布をなくしました。"
+        },
+        {
+          "question": "What did you lose?",
+          "questionJa": "何をなくしましたか？",
+          "answer": "I lost my passport.",
+          "answerJa": "パスポートをなくしました。"
+        },
+        {
+          "question": "What’s wrong with your phone?",
+          "questionJa": "スマホはどうしましたか？",
+          "answer": "My phone isn’t working.",
+          "answerJa": "スマホが動きません。"
+        },
+        {
+          "question": "Are you feeling okay?",
+          "questionJa": "体調は大丈夫ですか？",
+          "answer": "I don’t feel well.",
+          "answerJa": "体調が悪いです。"
+        },
+        {
+          "question": "What are you looking for?",
+          "questionJa": "何を探していますか？",
+          "answer": "I’m looking for a pharmacy.",
+          "answerJa": "薬局を探しています。"
+        },
+        {
+          "question": "Where would you like to go?",
+          "questionJa": "どこへ行きたいですか？",
+          "answer": "I’d like to go to a hospital.",
+          "answerJa": "病院に行きたいです。"
+        },
+        {
+          "question": "What symptoms do you have?",
+          "questionJa": "どんな症状がありますか？",
+          "answer": "I have a headache.",
+          "answerJa": "頭が痛いです。"
+        },
+        {
+          "question": "Does your stomach hurt?",
+          "questionJa": "お腹が痛いですか？",
+          "answer": "Yes, I have a stomachache.",
+          "answerJa": "はい、お腹が痛いです。"
+        },
+        {
+          "question": "Is there anyone who speaks English?",
+          "questionJa": "英語を話せる人はいますか？",
+          "answer": "Yes, I can call someone who speaks English.",
+          "answerJa": "はい、英語を話せる人を呼べます。"
+        }
+      ]
+    },
+    {
+      "topic": "Pattern practice",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "What would you like to do?",
+          "questionJa": "何をしたいですか？",
+          "answer": "I’d like to check in.",
+          "answerJa": "チェックインしたいです。"
+        },
+        {
+          "question": "How can I help with your reservation?",
+          "questionJa": "予約についてどのようにお手伝いできますか？",
+          "answer": "I’d like to change my reservation.",
+          "answerJa": "予約を変更したいです。"
+        },
+        {
+          "question": "Which ticket would you like?",
+          "questionJa": "どのチケットをご希望ですか？",
+          "answer": "I’d like to buy this ticket.",
+          "answerJa": "このチケットを買いたいです。"
+        },
+        {
+          "question": "Could you take a picture of me?",
+          "questionJa": "写真を撮ってもらえますか？",
+          "answer": "Sure. Where would you like to stand?",
+          "answerJa": "もちろんです。どこに立ちたいですか？"
+        },
+        {
+          "question": "Could you write it down?",
+          "questionJa": "ここに書いてもらえますか？",
+          "answer": "Sure. I’ll write it here.",
+          "answerJa": "もちろんです。ここに書きます。"
+        },
+        {
+          "question": "Do you have an English menu?",
+          "questionJa": "英語のメニューはありますか？",
+          "answer": "Yes, here is the English menu.",
+          "answerJa": "はい、こちらが英語のメニューです。"
+        },
+        {
+          "question": "Do you have any vegetarian options?",
+          "questionJa": "ベジタリアン向けの料理はありますか？",
+          "answer": "Yes, we have a few vegetarian dishes.",
+          "answerJa": "はい、いくつかベジタリアン向けの料理があります。"
+        },
+        {
+          "question": "What are you looking for?",
+          "questionJa": "何を探していますか？",
+          "answer": "I’m looking for an ATM.",
+          "answerJa": "ATMを探しています。"
+        },
+        {
+          "question": "Are you looking for anything in particular?",
+          "questionJa": "何か特定のものをお探しですか？",
+          "answer": "I’m looking for souvenirs.",
+          "answerJa": "お土産を探しています。"
+        },
+        {
+          "question": "Is there a restroom nearby?",
+          "questionJa": "この近くにトイレはありますか？",
+          "answer": "Yes, there is one next to the elevator.",
+          "answerJa": "はい、エレベーターの隣にあります。"
+        }
+      ]
+    },
+    {
+      "topic": "Small talk",
+      "mode": "anki",
+      "phrases": [
+        {
+          "question": "Where are you from?",
+          "questionJa": "どこ出身ですか？",
+          "answer": "I’m from Japan.",
+          "answerJa": "日本出身です。"
+        },
+        {
+          "question": "Where do you live?",
+          "questionJa": "どこに住んでいますか？",
+          "answer": "I live in Osaka.",
+          "answerJa": "大阪に住んでいます。"
+        },
+        {
+          "question": "What do you do?",
+          "questionJa": "仕事は何をしていますか？",
+          "answer": "I work as a data engineer.",
+          "answerJa": "データエンジニアとして働いています。"
+        },
+        {
+          "question": "What kind of work do you usually do?",
+          "questionJa": "普段はどのような仕事をしていますか？",
+          "answer": "I usually work with data pipelines and cloud services.",
+          "answerJa": "普段はデータ基盤やクラウドサービスを扱っています。"
+        },
+        {
+          "question": "What are your hobbies?",
+          "questionJa": "趣味は何ですか？",
+          "answer": "My hobbies are music and playing guitar.",
+          "answerJa": "趣味は音楽とギターです。"
+        },
+        {
+          "question": "What kind of music do you like?",
+          "questionJa": "どんな音楽が好きですか？",
+          "answer": "I especially like heavy music, such as modern metal.",
+          "answerJa": "特にモダンメタルのようなヘヴィな音楽が好きです。"
+        },
+        {
+          "question": "Why do you like traveling?",
+          "questionJa": "なぜ旅行が好きなのですか？",
+          "answer": "I like traveling because I enjoy seeing historical places and experiencing local culture.",
+          "answerJa": "歴史的な場所を見たり、現地の文化を体験したりするのが好きなので、旅行が好きです。"
+        },
+        {
+          "question": "What are you looking forward to on this trip?",
+          "questionJa": "今回の旅行で何を楽しみにしていますか？",
+          "answer": "I’m looking forward to trying local food and walking around the city.",
+          "answerJa": "現地の食べ物を試したり、街を歩いたりするのを楽しみにしています。"
+        },
+        {
+          "question": "Do you speak English?",
+          "questionJa": "英語を話せますか？",
+          "answer": "I don’t speak English perfectly, but I want to communicate as much as I can.",
+          "answerJa": "英語は完璧ではありませんが、できるだけコミュニケーションを取りたいです。"
+        },
+        {
+          "question": "Have you ever been here before?",
+          "questionJa": "以前ここに来たことはありますか？",
+          "answer": "No, this is my first time here.",
+          "answerJa": "いいえ、ここに来るのは初めてです。"
+        }
+      ]
+    }
+  ]
+}
