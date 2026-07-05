@@ -2,6 +2,7 @@
 
 Azure Speech Service を使った英語発音練習アプリ
 Google アカウントでログインし、ブラウザ上で録音した音声を発音評価 API に送り、文全体と単語・音素単位のフィードバックを確認できます。
+日常英会話の暗記用フラッシュカードも備えており、質問/回答ペアをめくりながら確認し、回答文の TTS 読み上げを発音 reference として聞けます。
 
 ## What is this?
 
@@ -13,7 +14,23 @@ Google アカウントでログインし、ブラウザ上で録音した音声�
 - `AIによる英語発音評価アプリ` である。
 - これは `英文を音読することで発音の自動評価` ができ、
 - `既存の英語学習アプリ` とは違って、
-- `サブスクリプション費や受講料がほぼ無料で、ユーザが練習したい任意英文の発音評価や音素単位での発音評価機能` が備わっている。
+- `サブスクリプション費や受講料がほぼ無料で、ユーザが練習したい任意英文の発音評価、音素単位での発音評価、日常英会話フレーズの暗記機能` が備わっている。
+
+## Features
+
+- 発音練習
+  - 録音した英文音読を Azure Speech Service で評価
+  - 文全体、単語、音素単位のフィードバックを表示
+  - お手本音声と自己録音の再生に対応
+- フラッシュカード
+  - `/flash_cards` で日常英会話の質問/回答ペアを暗記
+  - クリックまたはタップでカードの表裏を反転
+  - Prev/Next ボタンと左右スワイプ/ドラッグでカード移動
+  - 複数トピックの選択に対応
+  - 英文の下に日本語訳を補助表示
+  - Speak ボタンで回答文を TTS 読み上げ
+- 認証
+  - Firebase Authentication の Google Sign-In によるログイン必須化
 
 ## Current Architecture
 
@@ -21,6 +38,7 @@ Google アカウントでログインし、ブラウザ上で録音した音声�
 - `backend`: Express + TypeScript + Cloud Run
 - `auth`: Firebase Authentication (Google Sign-In)
 - `speech api`: Azure Speech Service
+- `learning content`: static JSON bundled with frontend
 
 ## Demo
 
